@@ -131,13 +131,14 @@ object ToolbarHook {
             ),
         )
         // 保险库弹层需要锚定窗口
+        // 必须先从 mInputFrame 移除，否则 addView 抛 "child already has a parent"
+        frame.removeView(inputView)
         container.addView(
             inputView,
             LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             ),
         )
-        frame.removeView(inputView)
         frame.addView(
             container,
             FrameLayout.LayoutParams(
