@@ -297,14 +297,16 @@ private fun SwitchboardApp(
         },
     ) { padding ->
         when (tab) {
-            0 -> Column {
+            // padding 必须应用到整个 Column：StatusHeader/SearchField 不吃
+            // inset 会被 TopAppBar 遮挡（状态文本与 Import 按钮不可见）
+            0 -> Column(Modifier.fillMaxSize().padding(padding)) {
                 StatusHeader(service != null, inScope, onRequestScope, onForceStop, onRestoreTheme)
                 SearchField(query) { query = it }
                 SettingsScreen(
                     query = query,
                     values = values,
                     onWrite = onBindValue,
-                    modifier = Modifier.fillMaxSize().padding(padding),
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
             else -> DiagnosticsScreen(
