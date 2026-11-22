@@ -92,7 +92,7 @@ object ClipboardHook {
                     newArgs[4] = "timestamp DESC limit $limit"
                     MLog.d(GROUP, "size limit rewritten to $limit")
                 }
-                chain.proceedWith(newArgs)
+                chain.proceedWith(chain.thisObject, newArgs)
             }
             MLog.i(GROUP, "query hooked on ${providerClass.name}")
         } else {
@@ -112,7 +112,9 @@ object ClipboardHook {
                         return@intercept null
                     }
                     for (key in values.keySet()) {
-                        val v = values.getAsString(key) ?: continue
+                        // 只检查文本值：timestamp 等数值列 getAsString 后是 13 位纯数字，
+                        // 会被卡号规则误判，导致所有剪贴板记录被拦截
+                        val v = values.get(key) as? String ?: continue
                         if (isSensitiveText(v)) {
                             MLog.d(GROUP, "blocked: sensitive content (${v.length} chars)")
                             return@intercept null

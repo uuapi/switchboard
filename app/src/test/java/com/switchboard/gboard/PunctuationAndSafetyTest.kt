@@ -53,6 +53,14 @@ class PunctuationAndSafetyTest {
     }
 
     @Test
+    fun `card number rule also matches plain long digit runs`() {
+        // 12-19 位纯数字按卡号拦截（13 位 = 毫秒时间戳长度，hook 侧依赖
+        // insert 遍历只检查 String 值来避开 metadata 列）
+        assertTrue(ClipboardHook.isSensitiveText("1795000000123"))
+        assertFalse(ClipboardHook.isSensitiveText("11-digit number"))
+    }
+
+    @Test
     fun `card numbers blocked even with separators`() {
         assertTrue(ClipboardHook.isSensitiveText("4111 1111 1111 1111"))
         assertTrue(ClipboardHook.isSensitiveText("6222-0211-1111-1111"))
