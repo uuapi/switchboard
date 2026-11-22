@@ -1,6 +1,6 @@
 {
-  "version": "v0.3.3",
-  "versionCode": 6,
-  "zipUrl": "https://github.com/uuapi/switchboard/releases/download/v0.3.3/app-release.apk",
+  "version": "v0.4.0",
+  "versionCode": 7,
+  "zipUrl": "https://github.com/uuapi/switchboard/releases/download/v0.4.0/app-release.apk",
   "changelog": "https://raw.githubusercontent.com/uuapi/switchboard/main/CHANGELOG.md"
 }

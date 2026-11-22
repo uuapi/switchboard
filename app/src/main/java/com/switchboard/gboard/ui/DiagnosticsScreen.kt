@@ -22,9 +22,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Apps
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lan
+import androidx.compose.material.icons.filled.Policy
+import androidx.compose.material.icons.filled.ToggleOn
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.unit.dp
 import com.switchboard.gboard.Config
 import com.switchboard.gboard.R
+import androidx.compose.material3.Icon
+import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
  * 诊断页：LSPosed 服务状态、作用域、Gboard 版本、开关概览、取日志指引。
@@ -47,7 +58,7 @@ fun DiagnosticsScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        DiagCard(stringResource(R.string.diag_service_t)) {
+        DiagCard(stringResource(R.string.diag_service_t), icon = Icons.Filled.Lan) {
             Text(
                 if (serviceBound) stringResource(R.string.service_bound_ok)
                 else stringResource(R.string.service_bound_fail),
@@ -57,7 +68,7 @@ fun DiagnosticsScreen(
 
 
 
-        DiagCard(stringResource(R.string.diag_scope_t)) {
+        DiagCard(stringResource(R.string.diag_scope_t), icon = Icons.Filled.Policy) {
             Text(
                 if (!serviceBound) stringResource(R.string.service_bound_fail)
                 else if (inScope) stringResource(R.string.scope_included).removePrefix("，").removePrefix(", ")
@@ -66,14 +77,14 @@ fun DiagnosticsScreen(
             )
         }
 
-        DiagCard(stringResource(R.string.diag_gboard_t)) {
+        DiagCard(stringResource(R.string.diag_gboard_t), icon = Icons.Filled.Info) {
             Text(
                 gboardVersion ?: stringResource(R.string.diag_gboard_missing),
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
 
-        DiagCard(stringResource(R.string.diag_switches_t)) {
+        DiagCard(stringResource(R.string.diag_switches_t), icon = Icons.Filled.ToggleOn) {
             val enabled = SettingsModel.allItems.count { item ->
                 when (item) {
                     is Item.Switch -> (values[item.key] as? Boolean) ?: item.def
@@ -86,7 +97,7 @@ fun DiagnosticsScreen(
             )
         }
 
-        DiagCard(stringResource(R.string.diag_compat_t)) {
+        DiagCard(stringResource(R.string.diag_compat_t), icon = Icons.Filled.Apps) {
             Text(
                 stringResource(R.string.diag_compat_d),
                 style = MaterialTheme.typography.bodySmall,
@@ -94,7 +105,7 @@ fun DiagnosticsScreen(
             )
         }
 
-        DiagCard(stringResource(R.string.diag_logs_t)) {
+        DiagCard(stringResource(R.string.diag_logs_t), icon = Icons.Filled.BugReport) {
             Text(
                 stringResource(R.string.diag_logs_d),
                 style = MaterialTheme.typography.bodySmall,
@@ -130,7 +141,11 @@ fun DiagnosticsScreen(
 }
 
 @Composable
-private fun DiagCard(title: String, content: @Composable () -> Unit) {
+private fun DiagCard(
+    title: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    content: @Composable () -> Unit,
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -138,7 +153,11 @@ private fun DiagCard(title: String, content: @Composable () -> Unit) {
         ),
     ) {
         Column(Modifier.padding(16.dp)) {
-            Text(title, style = MaterialTheme.typography.titleSmall)
+            Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                Icon(icon, null, Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
+                Spacer(Modifier.width(8.dp))
+                Text(title, style = MaterialTheme.typography.titleSmall)
+            }
             Spacer(Modifier.height(6.dp))
             content()
         }

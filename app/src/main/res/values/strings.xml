@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Switchboard</string>
-    <string name="app_desc">Make Gboard Great Again</string>
+    <string name="app_desc">Flip every switch on Gboard</string>
     <string name="xposed_desc">Flip every switch on Gboard — 剪贴板解锁、Flag 覆写、AMOLED 纯黑、密码框全键盘、九键半角标点、双拼提示、离线译词、工具栏、RGB 灯效</string>
 
     <!-- 状态 / 动作 -->
@@ -201,4 +201,8 @@
     <string name="act_copy">复制</string>
     <string name="act_copied">已复制</string>
     <string name="credit_note">Switchboard 整合自 GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / RGB-studio · 100% 本地</string>
+    <string name="chip_all">全部</string>
+    <string name="chip_service">服务</string>
+    <string name="chip_scope">作用域</string>
+    <string name="menu_more">更多选项</string>
 </resources>

@@ -1,21 +1,29 @@
 package com.switchboard.gboard.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -29,54 +37,146 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.switchboard.gboard.R
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.switchboard.gboard.R
 
 /**
- * 设置页：数据驱动渲染（SettingsModel.sections），支持搜索过滤。
- *
- * @param values   remote preferences 的快照（key → 当前值）
- * @param onWrite  写回回调（写入 remote preferences + 刷新快照）
+ * 设置主列表（Material 3 重设计）：
+ * 分类 FilterChip 横向过滤 + 圆角搜索框 + 分组圆角卡片（图标头 + 行 + 细分隔线），
+ * LazyColumn 渲染；搜索词与分类 chip 同时生效。
  */
+private fun matchItem(ctx: android.content.Context, item: Item, query: String): Boolean {
+    val q = query.trim()
+    if (q.isEmpty()) return true
+    val title = ctx.getString(item.title)
+    val desc = if (item.desc != 0) ctx.getString(item.desc) else ""
+    return title.contains(q, true) || desc.contains(q, true) || item.key.contains(q, true)
+}
+
 @Composable
-fun SettingsScreen(
+fun SettingsBody(
     query: String,
+    onQueryChange: (String) -> Unit,
+    chip: Int?,
+    onChipChange: (Int?) -> Unit,
     values: Map<String, Any?>,
     onWrite: (String, Any?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val ctx = androidx.compose.ui.platform.LocalContext.current
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(
-            start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp
-        ),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
-    ) {
-        for (section in SettingsModel.sections) {
-            val items = section.items.filter { item ->
-                if (query.isBlank()) true
-                else {
-                    val title = ctx.getString(item.title)
-                    val desc = if (item.desc != 0) ctx.getString(item.desc) else ""
-                    title.contains(query, true) || desc.contains(query, true) ||
-                        item.key.contains(query, true)
+    val ctx = LocalContext.current
+    val sections = SettingsModel.sections
+    LazyColumn(modifier = modifier.fillMaxSize()) {
+        // 搜索 + 分类 chips：随列表滚动，吸顶由内容量自然覆盖
+        item(key = "search") {
+            SearchField(query, onQueryChange)
+        }
+        item(key = "chips") {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                item {
+                    FilterChip(
+                        selected = chip == null,
+                        onClick = { onChipChange(null) },
+                        label = { Text(stringResource(R.string.chip_all)) },
+                    )
+                }
+                itemsIndexed(sections) { si, sec ->
+                    FilterChip(
+                        selected = chip == si,
+                        onClick = { onChipChange(if (chip == si) null else si) },
+                        label = { Text(stringResource(sec.title)) },
+                        leadingIcon = {
+                            Icon(sec.icon, null, Modifier.size(16.dp))
+                        },
+                    )
                 }
             }
-            if (items.isEmpty()) continue
-            item(key = "sec_${section.title}") {
+        }
+        val visible = sections.mapIndexed { si, sec ->
+            si to sec.items.filter { matchItem(ctx, it, query) }
+        }.filter { (si, items) ->
+            items.isNotEmpty() && (chip == null || chip == si)
+        }
+        if (visible.isEmpty()) {
+            item(key = "nomatch") {
                 Text(
-                    stringResource(section.title),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(top = 16.dp, bottom = 4.dp),
+                    stringResource(R.string.clipboard_empty),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.fillMaxWidth().padding(24.dp),
                 )
             }
-            for (item in items) {
-                item(key = item.key) {
+        }
+        visible.forEach { (si, items) ->
+            item(key = "sec$si") {
+                SectionCard(sections[si], items, values, onWrite)
+            }
+        }
+        item(key = "foot") {
+            Text(
+                stringResource(R.string.needs_restart),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun SectionCard(
+    section: Section,
+    items: List<Item>,
+    values: Map<String, Any?>,
+    onWrite: (String, Any?) -> Unit,
+) {
+    Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 6.dp, vertical = 4.dp),
+        ) {
+            Icon(
+                section.icon, null,
+                Modifier.size(20.dp),
+                tint = MaterialTheme.colorScheme.primary,
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                stringResource(section.title),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            Spacer(Modifier.weight(1f))
+            Text(
+                "${items.size}",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f)
+            ),
+        ) {
+            Column(Modifier.padding(vertical = 4.dp)) {
+                items.forEachIndexed { i, item ->
                     SettingRow(item, values, onWrite)
+                    if (i != items.lastIndex) {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .height(1.dp)
+                                .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+                        )
+                    }
                 }
             }
         }
@@ -84,28 +184,24 @@ fun SettingsScreen(
 }
 
 @Composable
-private fun SettingRow(
-    item: Item,
-    values: Map<String, Any?>,
-    onWrite: (String, Any?) -> Unit,
-) {
+fun SearchField(query: String, onChange: (String) -> Unit, modifier: Modifier = Modifier) {
+    OutlinedTextField(
+        value = query,
+        onValueChange = onChange,
+        modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
+        placeholder = { Text(stringResource(R.string.search_hint)) },
+        shape = RoundedCornerShape(28.dp),
+        singleLine = true,
+    )
+}
+
+@Composable
+private fun SettingRow(item: Item, values: Map<String, Any?>, onWrite: (String, Any?) -> Unit) {
     when (item) {
         is Item.Switch -> SwitchRow(item, values, onWrite)
         is Item.Num -> NumRow(item, values, onWrite)
         is Item.Text -> TextRow(item, values, onWrite)
         is Item.Choice -> ChoiceRow(item, values, onWrite)
-    }
-}
-
-@Composable
-private fun RowCard(content: @Composable () -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f)
-        ),
-    ) {
-        content()
     }
 }
 
@@ -141,6 +237,11 @@ private fun SwitchRow(item: Item.Switch, values: Map<String, Any?>, onWrite: (St
             )
         }
     }
+}
+
+@Composable
+private fun RowCard(content: @Composable () -> Unit) {
+    Box(Modifier.fillMaxWidth()) { content() }
 }
 
 @Composable
@@ -207,7 +308,7 @@ private fun TextRow(item: Item.Text, values: Map<String, Any?>, onWrite: (String
                 Spacer(Modifier.width(12.dp))
                 TextButton(onClick = { open = true }) {
                     Text(
-                        if (current.isBlank()) stringResource(android.R.string.cancel).let { "…" } else {
+                        if (current.isBlank()) "…" else {
                             if (current.length > 12) current.take(12) + "…" else current
                         }
                     )
@@ -325,63 +426,5 @@ private fun EditDialog(
         dismissButton = {
             TextButton(onClick = onDismiss) { Text(stringResource(android.R.string.cancel)) }
         },
-    )
-}
-
-
-@Composable
-fun StatusHeader(
-    serviceBound: Boolean,
-    inScope: Boolean,
-    onRequestScope: () -> Unit,
-    onForceStop: () -> Unit,
-    onRestoreTheme: () -> Unit,
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-        ),
-    ) {
-        Column(Modifier.padding(14.dp)) {
-            Text(
-                if (serviceBound) stringResource(R.string.service_bound_ok)
-                else stringResource(R.string.service_bound_fail),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Text(
-                when {
-                    !serviceBound -> ""
-                    inScope -> stringResource(R.string.scope_included).removePrefix("，").removePrefix(", ")
-                    else -> stringResource(R.string.scope_missing).removePrefix("，").removePrefix(", ")
-                },
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Row(
-                Modifier.fillMaxWidth().padding(top = 6.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                TextButton(onClick = onRequestScope) { Text(stringResource(R.string.scope_request)) }
-                TextButton(onClick = onForceStop) { Text(stringResource(R.string.force_stop_gboard)) }
-            }
-            TextButton(onClick = onRestoreTheme) {
-                Text(
-                    stringResource(R.string.restore_theme),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun SearchField(query: String, onChange: (String) -> Unit) {
-    OutlinedTextField(
-        value = query,
-        onValueChange = onChange,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
-        placeholder = { Text(stringResource(R.string.search_hint)) },
-        singleLine = true,
     )
 }

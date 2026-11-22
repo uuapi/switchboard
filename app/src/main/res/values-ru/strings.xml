@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Switchboard</string>
+    <string name="app_desc">Flip every switch on Gboard</string>
+    <string name="xposed_desc">Все переключатели Gboard в ваших руках — разблокировка буфера, подмена флагов, AMOLED-чёрный, полная клавиатура в полях пароля, полуширинная пунктуация на 9-клавишной, подсказки шуанпинь, офлайн-перевод, тулбар, RGB-эффекты</string>
+
+    <string name="service_bound_ok">Служба LSPosed подключена</string>
+    <string name="service_bound_fail">Служба LSPosed не подключена. Сначала включите Switchboard в LSPosed.</string>
+    <string name="scope_missing">, ⚠ Gboard ещё не в скоупе</string>
+    <string name="scope_included">, Gboard уже в скоупе ✓</string>
+    <string name="scope_request">Запросить скоуп Gboard</string>
+    <string name="scope_request_ok">Запрос отправлен. Подтвердите в LSPosed.</string>
+    <string name="scope_request_fail">Ошибка запроса: %1$s</string>
+    <string name="force_stop_gboard">Принудительно остановить Gboard (root)</string>
+    <string name="force_stop_ok">Gboard остановлен</string>
+    <string name="force_stop_fail">Не удалось (нет root?). Проверьте скоуп в LSPosed вручную.</string>
+    <string name="restore_theme">Вернуть стандартную тему Gboard (root)</string>
+    <string name="restore_theme_ok">Стандартная тема восстановлена, Gboard остановлен</string>
+    <string name="act_export">Экспорт настроек (в буфер обмена)</string>
+    <string name="act_import">Импорт настроек (из буфера обмена)</string>
+    <string name="act_export_ok">Настройки скопированы (%1$d шт.)</string>
+    <string name="act_import_ok">Импортировано %1$d шт. Остановите Gboard для применения.</string>
+    <string name="act_import_fail">Ошибка импорта: %1$s</string>
+    <string name="clipboard_empty">Буфер обмена пуст</string>
+    <string name="import_glossary">Импорт глоссария (TSV)</string>
+    <string name="import_glossary_ok">Глоссарий импортирован (%1$d строк). Остановите Gboard для применения.</string>
+    <string name="import_glossary_fail">Ошибка чтения</string>
+    <string name="search_hint">Поиск функций / переключателей</string>
+    <string name="needs_restart">После изменений остановите Gboard</string>
+    <string name="restart_note">v%1$s · libxposed API 102 · после изменений остановите Gboard</string>
+
+    <string name="sec_general">Общее</string>
+    <string name="sec_clipboard">Буфер обмена</string>
+    <string name="sec_flags">Разблокировка функций (flags)</string>
+    <string name="sec_appearance">Внешний вид</string>
+    <string name="sec_input">Ввод</string>
+    <string name="sec_toolbar">Тулбар</string>
+    <string name="sec_gloss">Перевод кандидатов</string>
+    <string name="sec_shuangpin">Подсказки шуанпинь</string>
+    <string name="sec_misc">Прочее</string>
+    <string name="sec_diagnostics">Диагностика</string>
+    <string name="tab_settings">Функции</string>
+    <string name="tab_diagnostics">Диагностика</string>
+
+    <string name="verbose_log_t">Подробный лог</string>
+    <string name="verbose_log_d">Отладочные логи: logcat -s Switchboard</string>
+    <string name="startup_toast_t">Тост о внедрении</string>
+    <string name="startup_toast_d">Короткое уведомление при старте Gboard</string>
+
+    <string name="clipboard_enabled_t">Улучшение буфера обмена</string>
+    <string name="clipboard_enabled_d">Снять лимиты размера и срока хранения истории</string>
+    <string name="clipboard_limit_t">Лимит истории</string>
+    <string name="clipboard_limit_d">0 = без лимита</string>
+    <string name="clipboard_days_t">Срок хранения (дней)</string>
+    <string name="clipboard_days_d">0 = бессрочно</string>
+    <string name="secure_clipboard_t">Защита чувствительных данных</string>
+    <string name="secure_clipboard_d">OTP / номера карт / пароли не попадают в историю</string>
+
+    <string name="flag_engine_t">Движок подмены флагов</string>
+    <string name="flag_engine_d">DexKit находит серверные флаги Gboard в рантайме</string>
+    <string name="flag_ai_t">AI-функции</string>
+    <string name="flag_ai_d">Smart Reply/Compose, Emojify, стикеры</string>
+    <string name="flag_grammar_t">Грамматика и правка</string>
+    <string name="flag_grammar_d">grammar checker / proofread на устройстве</string>
+    <string name="flag_writing_tools_t">Writing Tools</string>
+    <string name="flag_writing_tools_d">AI-письмо для Pixel</string>
+    <string name="flag_writing_tools_v2_t">Writing Tools V2</string>
+    <string name="flag_writing_tools_v2_d">Готовые промпты / My Style (нужен предыдущий)</string>
+    <string name="flag_all_keyboards_t">Writing Tools для всех языков</string>
+    <string name="flag_all_keyboards_d">Широкие языковые теги</string>
+    <string name="writing_backend_t">AI-бэкенд</string>
+    <string name="backend_cloud">Облако (сервер Gboard)</string>
+    <string name="backend_aicore">Gemini Nano на устройстве</string>
+    <string name="backend_astrea">Приватный вывод Astrea (рекомендуется)</string>
+    <string name="flag_multilingual_t">Многоязычный ввод</string>
+    <string name="flag_multilingual_d">Смешивайте языки без переключения</string>
+    <string name="flag_floating_t">Плавающая клавиатура</string>
+    <string name="flag_floating_d">Авто-плавание в ландшафте/сплите/freeform</string>
+    <string name="flag_emoji_kitchen_t">Emoji Kitchen</string>
+    <string name="flag_emoji_kitchen_d">Миксы эмодзи и поиск эмодзи v2</string>
+    <string name="flag_access_point_t">Редизайн меню</string>
+    <string name="flag_access_point_d">Тема Silk / системный шрифт / свои темы</string>
+    <string name="flag_metered_t">Загрузки в тарифной сети</string>
+    <string name="flag_metered_d">Языковые пакеты через мобильные данные</string>
+    <string name="flag_privacy_t">Отключить телеметрию</string>
+    <string name="flag_privacy_d">Выключить обучающие кэши / статистику / отправку логов</string>
+    <string name="flag_rambler_t">Голосовой Gemini Rambler</string>
+    <string name="flag_rambler_d">Агентный диктовка Pixel (проверьте на своём устройстве)</string>
+    <string name="flag_rounded_t">Скруглённые клавиши (M3E)</string>
+    <string name="flag_rounded_d">Кейкапы Material 3 Expressive</string>
+    <string name="flag_word_learning_t">Усиленное обучение слов</string>
+    <string name="flag_word_learning_d">Быстрый OOV / динамическая LM / концепт-предсказание</string>
+    <string name="flag_inline_t">Инлайн-подсказки (эксп.)</string>
+    <string name="flag_inline_d">инлайн-подсказки на стороне декодера</string>
+    <string name="flag_tflite_t">Движок TFLite (эксп.)</string>
+    <string name="flag_tflite_d">Ускорение нейросетевого предсказания</string>
+    <string name="flag_chips_t">Чипы буфера обмена</string>
+    <string name="flag_chips_d">Взаимоисключимо с разблокировкой выше</string>
+    <string name="custom_flags_t">Свои флаги (JSON)</string>
+    <string name="custom_flags_d">напр. [{\"name\":\"enable_x\",\"type\":\"bool\",\"value\":\"true\"}]</string>
+
+    <string name="amoled_t">AMOLED-чёрный</string>
+    <string name="amoled_d">Чисто чёрные поверхности в тёмной теме</string>
+    <string name="emoji_alpha_t">Непрозрачные эмодзи</string>
+    <string name="emoji_alpha_d">100% альфа для эмодзи в строке кандидатов</string>
+
+    <string name="password_keyboard_t">Полная клавиатура в полях пароля</string>
+    <string name="password_keyboard_d">⚠ Компромисс безопасности: Gboard может записывать пароли</string>
+    <string name="punctuation_t">Полуширинная пунктуация на 9-клав.</string>
+    <string name="punctuation_d">Цифровая страница: ，。 → , . и клавиши + − × ÷</string>
+
+    <string name="toolbar_t">Тулбар клавиатуры</string>
+    <string name="toolbar_d">Хранилище / вставка / выделить всё / режим выделения / курсор / отмена</string>
+    <string name="toolbar_text1_t">Текст-шорткат 1</string>
+    <string name="toolbar_text1_d">Вставляется кнопкой ⭐</string>
+    <string name="toolbar_text2_t">Текст-шорткат 2</string>
+    <string name="toolbar_text2_d">Вставляется кнопкой ⭐⭐</string>
+    <string name="shot_capture_t">Сбор скриншотов</string>
+    <string name="shot_capture_d">Следит за папкой Screenshots в хранилище</string>
+    <string name="shot_to_clipboard_t">Скриншоты в буфер</string>
+    <string name="shot_to_clipboard_d">Также копировать скриншоты в буфер</string>
+
+    <string name="gloss_t">Перевод кандидатов</string>
+    <string name="gloss_d">Перевод под кандидатами (офлайн-словари)</string>
+    <string name="gloss_target_t">Целевой язык</string>
+    <string name="gloss_target_d">zh / en / ja / de / fr / es / ru</string>
+    <string name="gloss_size_t">Размер шрифта (sp)</string>
+    <string name="gloss_size_d">8-14</string>
+    <string name="gloss_banner_t">Баннер внедрения</string>
+    <string name="gloss_banner_d">Показать капсулу при первом внедрении</string>
+
+    <string name="shuangpin_t">Подсказки шуанпинь</string>
+    <string name="shuangpin_d">Инициали/финали на клавишах (следует схеме Gboard)</string>
+    <string name="shuangpin_size_t">Размер шрифта (sp)</string>
+    <string name="shuangpin_size_d">7-17</string>
+    <string name="shuangpin_dynamic_t">Динамические подсказки</string>
+    <string name="shuangpin_dynamic_d">Показывать только совместимые финали</string>
+    <string name="shuangpin_blank_t">Скрыть основные буквы</string>
+    <string name="shuangpin_blank_d">Скрывать полные пиньинь при включённом шуанпинь</string>
+    <string name="shuangpin_letter_size_t">Размер букв (sp)</string>
+    <string name="shuangpin_letter_size_d">0 = не менять</string>
+    <string name="shuangpin_semicolon_t">Клавиша ; </string>
+    <string name="shuangpin_semicolon_d">Плавающая кнопка ; (для схемы MS)</string>
+    <string name="emoji_suggest_t">Гибкие эмодзи-подсказки</string>
+    <string name="emoji_suggest_d">Встроенный словарь пиньинь → эмодзи при вводе</string>
+
+    <string name="rgb_t">RGB-эффекты (эксп.)</string>
+    <string name="rgb_d">Заметная нагрузка на производительность</string>
+    <string name="rgb_effect_t">Эффект</string>
+    <string name="rgb_effect_ripple">Рябь</string>
+    <string name="rgb_effect_water">Капли воды</string>
+    <string name="rgb_effect_neon">Неоновая молния</string>
+    <string name="rgb_effect_supernova">Сверхновая</string>
+    <string name="rgb_effect_magma">Магма</string>
+    <string name="rgb_effect_sonic">Звуковая волна</string>
+    <string name="rgb_effect_blackhole">Чёрная дыра</string>
+    <string name="rgb_effect_rain">Дождь</string>
+    <string name="rgb_effect_chroma">Razer chroma</string>
+    <string name="rgb_wave_speed_t">Скорость %</string>
+    <string name="rgb_wave_speed_d">30-200</string>
+    <string name="rgb_trail_t">Неоновый след</string>
+    <string name="rgb_trail_d">Неоновый след при свайпе</string>
+    <string name="rgb_turbo_t">Перегрев WPM</string>
+    <string name="rgb_turbo_d">Эффекты усиливаются при быстром вводе</string>
+    <string name="rgb_key_flow_t">Поток по кейкапам</string>
+    <string name="rgb_key_flow_d">Световая полоса проходит по клавишам</string>
+    <string name="rgb_border_t">Только контур</string>
+    <string name="rgb_border_d">Светятся только контуры клавиш</string>
+    <string name="rgb_key_speed_t">Скорость потока %</string>
+    <string name="rgb_key_speed_d">20-300</string>
+    <string name="rgb_glow_t">RGB-подсветка</string>
+    <string name="rgb_glow_d">Дышащая подсветка у основания</string>
+    <string name="rgb_color1_t">RGB основной</string>
+    <string name="rgb_color2_t">RGB дополнительный</string>
+    <string name="user_glossary_t">Свой глоссарий (TSV)</string>
+    <string name="user_glossary_d">Строка: слово&lt;TAB&gt;перевод, перекрывает встроенный</string>
+
+    <string name="diag_service_t">Служба LSPosed</string>
+    <string name="diag_scope_t">Скоуп Gboard</string>
+    <string name="diag_gboard_t">Версия Gboard</string>
+    <string name="diag_gboard_missing">Не обнаружена (видимость через manifest queries)</string>
+    <string name="diag_switches_t">Сводка переключателей</string>
+    <string name="diag_switches_summary">%1$d / %2$d включено</string>
+    <string name="diag_compat_t">Матрица совместимости</string>
+    <string name="diag_compat_d">Матрица якорей по версиям Gboard: запустите compat-test/scan.py офлайн; monitor-воркфлоу обновляет compat-report.json еженедельно</string>
+    <string name="diag_logs_t">Логи для отладки</string>
+    <string name="diag_logs_d">Результаты установки подсистем — в логах LSPosed и logcat. На ПК выполните:</string>
+    <string name="diag_logs_cmd">adb logcat -s Switchboard</string>
+    <string name="act_copy">Копировать</string>
+    <string name="act_copied">Скопировано</string>
+    <string name="credit_note">Switchboard объединяет GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / RGB-studio · 100% локально</string>
+    <string name="chip_all">Все</string>
+    <string name="chip_service">Сервис</string>
+    <string name="chip_scope">Скоуп</string>
+    <string name="menu_more">Ещё</string>
+</resources>

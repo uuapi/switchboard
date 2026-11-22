@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Switchboard</string>
+    <string name="app_desc">Flip every switch on Gboard</string>
+    <string name="xposed_desc">Cada interruptor de Gboard en tus manos — desbloqueo del portapapeles, flags, negro AMOLED, teclado completo en contraseñas, puntuación semifinal en 9 teclas, pistas de shuangpin, glosa sin conexión, barra de herramientas, efectos RGB</string>
+
+    <string name="service_bound_ok">Servicio LSPosed conectado</string>
+    <string name="service_bound_fail">Servicio LSPosed no conectado. Activa Switchboard en LSPosed primero.</string>
+    <string name="scope_missing">, ⚠ Gboard aún sin ámbito</string>
+    <string name="scope_included">, Gboard ya está en el ámbito ✓</string>
+    <string name="scope_request">Solicitar ámbito de Gboard</string>
+    <string name="scope_request_ok">Solicitud enviada. Confírmala en LSPosed.</string>
+    <string name="scope_request_fail">Falló la solicitud: %1$s</string>
+    <string name="force_stop_gboard">Forzar detención de Gboard (root)</string>
+    <string name="force_stop_ok">Gboard detenido</string>
+    <string name="force_stop_fail">Falló (¿sin root?). Revisa el ámbito en LSPosed manualmente.</string>
+    <string name="restore_theme">Restaurar tema original de Gboard (root)</string>
+    <string name="restore_theme_ok">Tema original restaurado, Gboard detenido</string>
+    <string name="act_export">Exportar ajustes (copiar al portapapeles)</string>
+    <string name="act_import">Importar ajustes (pegar del portapapeles)</string>
+    <string name="act_export_ok">Ajustes copiados (%1$d elementos)</string>
+    <string name="act_import_ok">%1$d elementos importados. Fuerza la detención de Gboard para aplicar.</string>
+    <string name="act_import_fail">Error al importar: %1$s</string>
+    <string name="clipboard_empty">El portapapeles está vacío</string>
+    <string name="import_glossary">Importar glosario de usuario (TSV)</string>
+    <string name="import_glossary_ok">Glosario importado (%1$d líneas). Fuerza la detención de Gboard para aplicar.</string>
+    <string name="import_glossary_fail">Error de lectura</string>
+    <string name="search_hint">Buscar funciones / interruptores</string>
+    <string name="needs_restart">Fuerza la detención de Gboard tras cambiar algo</string>
+    <string name="restart_note">v%1$s · libxposed API 102 · fuerza la detención de Gboard tras cambiar algo</string>
+
+    <string name="sec_general">General</string>
+    <string name="sec_clipboard">Portapapeles</string>
+    <string name="sec_flags">Desbloqueo de funciones (flags)</string>
+    <string name="sec_appearance">Apariencia</string>
+    <string name="sec_input">Entrada</string>
+    <string name="sec_toolbar">Barra de herramientas</string>
+    <string name="sec_gloss">Glosa de candidatos</string>
+    <string name="sec_shuangpin">Pistas de shuangpin</string>
+    <string name="sec_misc">Varios</string>
+    <string name="sec_diagnostics">Diagnóstico</string>
+    <string name="tab_settings">Funciones</string>
+    <string name="tab_diagnostics">Diagnóstico</string>
+
+    <string name="verbose_log_t">Registro detallado</string>
+    <string name="verbose_log_d">Logs de depuración con logcat -s Switchboard</string>
+    <string name="startup_toast_t">Aviso de inyección</string>
+    <string name="startup_toast_d">Aviso breve al iniciar Gboard</string>
+
+    <string name="clipboard_enabled_t">Mejorar portapapeles</string>
+    <string name="clipboard_enabled_d">Quita límites de tamaño y retención del historial</string>
+    <string name="clipboard_limit_t">Límite del historial</string>
+    <string name="clipboard_limit_d">0 = sin límite</string>
+    <string name="clipboard_days_t">Días de retención</string>
+    <string name="clipboard_days_d">0 = para siempre</string>
+    <string name="secure_clipboard_t">Protección de datos sensibles</string>
+    <string name="secure_clipboard_d">OTP / tarjetas / contraseñas nunca entran al historial</string>
+
+    <string name="flag_engine_t">Motor de flags</string>
+    <string name="flag_engine_d">DexKit localiza los flags del servidor de Gboard en tiempo real</string>
+    <string name="flag_ai_t">Funciones de IA</string>
+    <string name="flag_ai_d">Smart Reply/Compose, Emojify, stickers</string>
+    <string name="flag_grammar_t">Gramática y corrección</string>
+    <string name="flag_grammar_d">grammar checker / proofread en el dispositivo</string>
+    <string name="flag_writing_tools_t">Writing Tools</string>
+    <string name="flag_writing_tools_d">Escritura IA exclusiva de Pixel</string>
+    <string name="flag_writing_tools_v2_t">Writing Tools V2</string>
+    <string name="flag_writing_tools_v2_d">Prompts predefinidos / My Style (requiere el anterior)</string>
+    <string name="flag_all_keyboards_t">Writing Tools en todos los idiomas</string>
+    <string name="flag_all_keyboards_d">Etiquetas de idioma comodín</string>
+    <string name="writing_backend_t">Backend de inferencia IA</string>
+    <string name="backend_cloud">Nube (servidor de Gboard)</string>
+    <string name="backend_aicore">Gemini Nano en el dispositivo</string>
+    <string name="backend_astrea">Inferencia privada Astrea (recomendado)</string>
+    <string name="flag_multilingual_t">Escritura multilingüe</string>
+    <string name="flag_multilingual_d">Mezcla idiomas sin cambiar de teclado</string>
+    <string name="flag_floating_t">Teclado flotante</string>
+    <string name="flag_floating_d">Flotación automática en horizontal/split/freeform</string>
+    <string name="flag_emoji_kitchen_t">Emoji Kitchen</string>
+    <string name="flag_emoji_kitchen_d">Mezclas de emojis y búsqueda de emojis v2</string>
+    <string name="flag_access_point_t">Rediseño del menú</string>
+    <string name="flag_access_point_d">Tema Silk / fuente del sistema / temas propios</string>
+    <string name="flag_metered_t">Descargas en red de datos</string>
+    <string name="flag_metered_d">Paquetes de idioma con datos móviles</string>
+    <string name="flag_privacy_t">Desactivar telemetría</string>
+    <string name="flag_privacy_d">Apaga cachés de entrenamiento / estadísticas / envío de logs</string>
+    <string name="flag_rambler_t">Voz Gemini Rambler</string>
+    <string name="flag_rambler_d">Dictado agéntico de Pixel (verifica en tu dispositivo)</string>
+    <string name="flag_rounded_t">Teclas redondeadas (M3E)</string>
+    <string name="flag_rounded_d">Teclas Material 3 Expressive</string>
+    <string name="flag_word_learning_t">Aprendizaje de palabras mejorado</string>
+    <string name="flag_word_learning_d">OOV rápido / LM dinámico / predicción de conceptos</string>
+    <string name="flag_inline_t">Sugerencias en línea (experimental)</string>
+    <string name="flag_inline_d">sugerencias en línea del decodificador</string>
+    <string name="flag_tflite_t">Motor TFLite (experimental)</string>
+    <string name="flag_tflite_d">Acelera la predicción neuronal</string>
+    <string name="flag_chips_t">Chips del portapapeles</string>
+    <string name="flag_chips_d">Excluyente con el desbloqueo de arriba</string>
+    <string name="custom_flags_t">Flags personalizados (JSON)</string>
+    <string name="custom_flags_d">p. ej. [{\"name\":\"enable_x\",\"type\":\"bool\",\"value\":\"true\"}]</string>
+
+    <string name="amoled_t">Negro puro AMOLED</string>
+    <string name="amoled_d">Fuerza superficies negras en modo oscuro</string>
+    <string name="emoji_alpha_t">Emojis de candidatos opacos</string>
+    <string name="emoji_alpha_d">Fuerza 100% de alfa en los emojis de candidatos</string>
+
+    <string name="password_keyboard_t">Teclado completo en campos de contraseña</string>
+    <string name="password_keyboard_d">⚠ Riesgo: Gboard podría registrar contraseñas</string>
+    <string name="punctuation_t">Puntuación semifinal en 9 teclas</string>
+    <string name="punctuation_d">Página numérica: ，。 → , . y teclas + − × ÷</string>
+
+    <string name="toolbar_t">Barra del teclado</string>
+    <string name="toolbar_d">Bóveda / pegar / seleccionar todo / modo selección / cursor / deshacer</string>
+    <string name="toolbar_text1_t">Atajo de texto 1</string>
+    <string name="toolbar_text1_d">Insertado con el botón ⭐</string>
+    <string name="toolbar_text2_t">Atajo de texto 2</string>
+    <string name="toolbar_text2_d">Insertado con el botón ⭐⭐</string>
+    <string name="shot_capture_t">Captura de pantallas</string>
+    <string name="shot_capture_d">Vigila las carpetas de capturas hacia la bóveda</string>
+    <string name="shot_to_clipboard_t">Capturas al portapapeles</string>
+    <string name="shot_to_clipboard_d">También copia las capturas al portapapeles</string>
+
+    <string name="gloss_t">Glosa de candidatos</string>
+    <string name="gloss_d">Traducción bajo los candidatos (diccionarios sin conexión)</string>
+    <string name="gloss_target_t">Idioma destino</string>
+    <string name="gloss_target_d">zh / en / ja / de / fr / es / ru</string>
+    <string name="gloss_size_t">Tamaño de fuente (sp)</string>
+    <string name="gloss_size_d">8-14</string>
+    <string name="gloss_banner_t">Banner de inyección</string>
+    <string name="gloss_banner_d">Cápsula informativa en la primera inyección</string>
+
+    <string name="shuangpin_t">Pistas de shuangpin</string>
+    <string name="shuangpin_d">Superpone iniciales/finales en las teclas (sigue el esquema de Gboard)</string>
+    <string name="shuangpin_size_t">Tamaño de fuente (sp)</string>
+    <string name="shuangpin_size_d">7-17</string>
+    <string name="shuangpin_dynamic_t">Pistas dinámicas</string>
+    <string name="shuangpin_dynamic_d">Muestra solo las finales compatibles al escribir</string>
+    <string name="shuangpin_blank_t">Ocultar letras principales</string>
+    <string name="shuangpin_blank_d">Oculta el pinyin completo con shuangpin activo</string>
+    <string name="shuangpin_letter_size_t">Tamaño de letra (sp)</string>
+    <string name="shuangpin_letter_size_d">0 = no cambiar</string>
+    <string name="shuangpin_semicolon_t">Tecla punto y coma</string>
+    <string name="shuangpin_semicolon_d">Botón ; flotante (para esquema MS)</string>
+    <string name="emoji_suggest_t">Sugerencias flexibles de emoji</string>
+    <string name="emoji_suggest_d">Diccionario pinyin → emoji mientras escribes</string>
+
+    <string name="rgb_t">Efectos RGB (experimental)</string>
+    <string name="rgb_d">Coste de rendimiento notable</string>
+    <string name="rgb_effect_t">Efecto</string>
+    <string name="rgb_effect_ripple">Ondas</string>
+    <string name="rgb_effect_water">Gotas</string>
+    <string name="rgb_effect_neon">Relámpago neón</string>
+    <string name="rgb_effect_supernova">Supernova</string>
+    <string name="rgb_effect_magma">Magma</string>
+    <string name="rgb_effect_sonic">Onda sónica</string>
+    <string name="rgb_effect_blackhole">Agujero negro</string>
+    <string name="rgb_effect_rain">Lluvia</string>
+    <string name="rgb_effect_chroma">Razer chroma</string>
+    <string name="rgb_wave_speed_t">Velocidad %</string>
+    <string name="rgb_wave_speed_d">30-200</string>
+    <string name="rgb_trail_t">Rastro al deslizar</string>
+    <string name="rgb_trail_d">Rastro de neón al deslizar</string>
+    <string name="rgb_turbo_t">Sobrecalentamiento WPM</string>
+    <string name="rgb_turbo_d">Los efectos se intensifican al teclear rápido</string>
+    <string name="rgb_key_flow_t">Flujo en teclas</string>
+    <string name="rgb_key_flow_d">Una banda de luz barre las teclas</string>
+    <string name="rgb_border_t">Solo contorno</string>
+    <string name="rgb_border_d">Solo brillan los bordes de las teclas</string>
+    <string name="rgb_key_speed_t">Velocidad del flujo %</string>
+    <string name="rgb_key_speed_d">20-300</string>
+    <string name="rgb_glow_t">Iluminación inferior</string>
+    <string name="rgb_glow_d">Brillo respirante en la base del teclado</string>
+    <string name="rgb_color1_t">RGB primario</string>
+    <string name="rgb_color2_t">RGB secundario</string>
+    <string name="user_glossary_t">Glosario propio (TSV)</string>
+    <string name="user_glossary_d">Cada línea: palabra&lt;TAB&gt;glosa, anula el integrado</string>
+
+    <string name="diag_service_t">Servicio LSPosed</string>
+    <string name="diag_scope_t">Ámbito de Gboard</string>
+    <string name="diag_gboard_t">Versión de Gboard</string>
+    <string name="diag_gboard_missing">No detectada (visibilidad vía manifest queries)</string>
+    <string name="diag_switches_t">Resumen de interruptores</string>
+    <string name="diag_switches_summary">%1$d / %2$d activados</string>
+    <string name="diag_compat_t">Matriz de compatibilidad</string>
+    <string name="diag_compat_d">Matriz de anclas por versión: ejecuta compat-test/scan.py sin conexión; el workflow monitor renueva compat-report.json cada semana</string>
+    <string name="diag_logs_t">Logs de diagnóstico</string>
+    <string name="diag_logs_d">Los resultados por subsistema van a los logs de LSPosed y logcat. En tu PC:</string>
+    <string name="diag_logs_cmd">adb logcat -s Switchboard</string>
+    <string name="act_copy">Copiar</string>
+    <string name="act_copied">Copiado</string>
+    <string name="credit_note">Switchboard integra GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / RGB-studio · 100% local</string>
+    <string name="chip_all">Todos</string>
+    <string name="chip_service">Servicio</string>
+    <string name="chip_scope">Ámbito</string>
+    <string name="menu_more">Más opciones</string>
+</resources>

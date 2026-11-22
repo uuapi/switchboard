@@ -189,4 +189,8 @@
     <string name="act_copy">Copy</string>
     <string name="act_copied">Copied</string>
     <string name="credit_note">Switchboard integrates GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / RGB-studio · 100% local</string>
+    <string name="chip_all">All</string>
+    <string name="chip_service">Service</string>
+    <string name="chip_scope">Scope</string>
+    <string name="menu_more">More options</string>
 </resources>

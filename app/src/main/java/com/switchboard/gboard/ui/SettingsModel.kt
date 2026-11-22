@@ -2,6 +2,17 @@ package com.switchboard.gboard.ui
 
 import androidx.annotation.StringRes
 import com.switchboard.gboard.R
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Abc
+import androidx.compose.material.icons.filled.ContentPaste
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.GTranslate
+import androidx.compose.material.icons.filled.Keyboard
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.Widgets
+import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
  * 声明式设置项模型：一份列表同时驱动渲染、搜索、导出/导入。
@@ -42,22 +53,26 @@ sealed interface Item {
     ) : Item
 }
 
-data class Section(@StringRes val title: Int, val items: List<Item>)
+data class Section(
+    @StringRes val title: Int,
+    val items: List<Item>,
+    val icon: ImageVector,
+)
 
 object SettingsModel {
 
     val sections: List<Section> = listOf(
-        Section(R.string.sec_general, listOf(
+        Section(title = R.string.sec_general, icon = Icons.Filled.Tune, items = listOf(
             Item.Switch("verbose_log", R.string.verbose_log_t, R.string.verbose_log_d),
             Item.Switch("startup_toast", R.string.startup_toast_t, R.string.startup_toast_d),
         )),
-        Section(R.string.sec_clipboard, listOf(
+        Section(title = R.string.sec_clipboard, icon = Icons.Filled.ContentPaste, items = listOf(
             Item.Switch("clipboard_enabled", R.string.clipboard_enabled_t, R.string.clipboard_enabled_d, true),
             Item.Num("clipboard_limit", R.string.clipboard_limit_t, R.string.clipboard_limit_d),
             Item.Num("clipboard_days", R.string.clipboard_days_t, R.string.clipboard_days_d),
             Item.Switch("secure_clipboard_enabled", R.string.secure_clipboard_t, R.string.secure_clipboard_d, true),
         )),
-        Section(R.string.sec_flags, listOf(
+        Section(title = R.string.sec_flags, icon = Icons.Filled.Flag, items = listOf(
             Item.Switch("flag_engine_enabled", R.string.flag_engine_t, R.string.flag_engine_d, true),
             Item.Switch("flag_ai", R.string.flag_ai_t, R.string.flag_ai_d),
             Item.Switch("flag_grammar", R.string.flag_grammar_t, R.string.flag_grammar_d),
@@ -83,28 +98,28 @@ object SettingsModel {
             Item.Switch("flag_clipboard_chips", R.string.flag_chips_t, R.string.flag_chips_d),
             Item.Text("custom_flags_json", R.string.custom_flags_t, R.string.custom_flags_d, "", multiline = true),
         )),
-        Section(R.string.sec_appearance, listOf(
+        Section(title = R.string.sec_appearance, icon = Icons.Filled.Palette, items = listOf(
             Item.Switch("amoled_enabled", R.string.amoled_t, R.string.amoled_d),
             Item.Switch("emoji_alpha_enabled", R.string.emoji_alpha_t, R.string.emoji_alpha_d, true),
         )),
-        Section(R.string.sec_input, listOf(
+        Section(title = R.string.sec_input, icon = Icons.Filled.Keyboard, items = listOf(
             Item.Switch("password_keyboard_enabled", R.string.password_keyboard_t, R.string.password_keyboard_d),
             Item.Switch("punctuation_enabled", R.string.punctuation_t, R.string.punctuation_d, true),
         )),
-        Section(R.string.sec_toolbar, listOf(
+        Section(title = R.string.sec_toolbar, icon = Icons.Filled.Widgets, items = listOf(
             Item.Switch("toolbar_enabled", R.string.toolbar_t, R.string.toolbar_d),
             Item.Text("toolbar_text_1", R.string.toolbar_text1_t, R.string.toolbar_text1_d),
             Item.Text("toolbar_text_2", R.string.toolbar_text2_t, R.string.toolbar_text2_d),
             Item.Switch("shot_capture_enabled", R.string.shot_capture_t, R.string.shot_capture_d),
             Item.Switch("shot_to_clipboard", R.string.shot_to_clipboard_t, R.string.shot_to_clipboard_d),
         )),
-        Section(R.string.sec_gloss, listOf(
+        Section(title = R.string.sec_gloss, icon = Icons.Filled.GTranslate, items = listOf(
             Item.Switch("gloss_enabled", R.string.gloss_t, R.string.gloss_d),
             Item.Text("gloss_target_lang", R.string.gloss_target_t, R.string.gloss_target_d, "zh"),
             Item.Num("gloss_size", R.string.gloss_size_t, R.string.gloss_size_d, 11),
             Item.Switch("gloss_banner", R.string.gloss_banner_t, R.string.gloss_banner_d),
         )),
-        Section(R.string.sec_shuangpin, listOf(
+        Section(title = R.string.sec_shuangpin, icon = Icons.Filled.Abc, items = listOf(
             Item.Switch("shuangpin_enabled", R.string.shuangpin_t, R.string.shuangpin_d),
             Item.Num("shuangpin_size", R.string.shuangpin_size_t, R.string.shuangpin_size_d, 10),
             Item.Switch("shuangpin_dynamic", R.string.shuangpin_dynamic_t, R.string.shuangpin_dynamic_d, true),
@@ -113,7 +128,7 @@ object SettingsModel {
             Item.Switch("shuangpin_semicolon", R.string.shuangpin_semicolon_t, R.string.shuangpin_semicolon_d),
             Item.Switch("emoji_suggest_enabled", R.string.emoji_suggest_t, R.string.emoji_suggest_d),
         )),
-        Section(R.string.sec_misc, listOf(
+        Section(title = R.string.sec_misc, icon = Icons.Filled.Extension, items = listOf(
             Item.Switch("rgb_enabled", R.string.rgb_t, R.string.rgb_d),
             Item.Choice("rgb_effect", R.string.rgb_effect_t, listOf(
                 "ripple" to R.string.rgb_effect_ripple,

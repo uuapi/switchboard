@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Switchboard</string>
+    <string name="app_desc">Flip every switch on Gboard</string>
+    <string name="xposed_desc">Gboard のすべてのスイッチを手元に — クリップボード解放、flag 上書き、AMOLED 純黒、パスワード欄フルキーボード、9 キー半角句読点、双拼ガイド、オフライン対訳、ツールバー、RGB エフェクト</string>
+
+    <string name="service_bound_ok">LSPosed サービスに接続済み</string>
+    <string name="service_bound_fail">LSPosed サービス未接続。先に LSPosed で Switchboard を有効化してください。</string>
+    <string name="scope_missing">、⚠ Gboard スコープ未許可</string>
+    <string name="scope_included">、Gboard はスコープ済み ✓</string>
+    <string name="scope_request">Gboard スコープを要求</string>
+    <string name="scope_request_ok">スコープ要求を送信しました。LSPosed で承認してください。</string>
+    <string name="scope_request_fail">要求失敗: %1$s</string>
+    <string name="force_stop_gboard">Gboard を強制停止（root）</string>
+    <string name="force_stop_ok">Gboard を強制停止しました</string>
+    <string name="force_stop_fail">失敗（root 不可？）。LSPosed でスコープを手動再確認してください。</string>
+    <string name="restore_theme">Gboard 既定テーマを復元（root）</string>
+    <string name="restore_theme_ok">既定テーマを復元し、Gboard を停止しました</string>
+    <string name="act_export">設定をエクスポート（クリップボードへコピー）</string>
+    <string name="act_import">設定をインポート（クリップボードから貼り付け）</string>
+    <string name="act_export_ok">設定をクリップボードにコピーしました（%1$d 項目）</string>
+    <string name="act_import_ok">%1$d 項目をインポートしました。Gboard を強制停止して反映してください。</string>
+    <string name="act_import_fail">インポート失敗: %1$s</string>
+    <string name="clipboard_empty">クリップボードが空です</string>
+    <string name="import_glossary">ユーザー対訳表をインポート（TSV）</string>
+    <string name="import_glossary_ok">対訳表をインポートしました（%1$d 行）。Gboard を強制停止して反映してください。</string>
+    <string name="import_glossary_fail">読み込み失敗</string>
+    <string name="search_hint">機能・スイッチを検索</string>
+    <string name="needs_restart">変更後は Gboard を強制停止してください</string>
+    <string name="restart_note">v%1$s · libxposed API 102 · 変更後は Gboard を強制停止</string>
+
+    <string name="sec_general">一般</string>
+    <string name="sec_clipboard">クリップボード</string>
+    <string name="sec_flags">機能解放（flag）</string>
+    <string name="sec_appearance">外観</string>
+    <string name="sec_input">入力</string>
+    <string name="sec_toolbar">ツールバー</string>
+    <string name="sec_gloss">候補対訳</string>
+    <string name="sec_shuangpin">双拼ガイド</string>
+    <string name="sec_misc">その他</string>
+    <string name="sec_diagnostics">診断</string>
+    <string name="tab_settings">機能</string>
+    <string name="tab_diagnostics">診断</string>
+
+    <string name="verbose_log_t">詳細ログ</string>
+    <string name="verbose_log_d">logcat -s Switchboard でデバッグログ</string>
+    <string name="startup_toast_t">注入トースト</string>
+    <string name="startup_toast_d">Gboard 起動時に短く通知</string>
+
+    <string name="clipboard_enabled_t">クリップボード改良</string>
+    <string name="clipboard_enabled_d">履歴件数と保持期間の上限を解放</string>
+    <string name="clipboard_limit_t">履歴上限</string>
+    <string name="clipboard_limit_d">0 = 無制限</string>
+    <string name="clipboard_days_t">保持日数</string>
+    <string name="clipboard_days_d">0 = 無期限</string>
+    <string name="secure_clipboard_t">機密情報ガード</string>
+    <string name="secure_clipboard_d">OTP / カード番号 / パスワード欄は履歴に入れない</string>
+
+    <string name="flag_engine_t">flag 上書きエンジン</string>
+    <string name="flag_engine_d">DexKit で Gboard のサーバー側 flag を実行時に特定</string>
+    <string name="flag_ai_t">AI 機能</string>
+    <string name="flag_ai_d">Smart Reply/Compose、Emojify、ステッカー</string>
+    <string name="flag_grammar_t">文法チェック＆校正</string>
+    <string name="flag_grammar_d">grammar checker / 端末内 proofread</string>
+    <string name="flag_writing_tools_t">Writing Tools</string>
+    <string name="flag_writing_tools_d">Pixel 専用 AI ライティング</string>
+    <string name="flag_writing_tools_v2_t">Writing Tools V2</string>
+    <string name="flag_writing_tools_v2_d">プリセットプロンプト / My Style（前項が必要）</string>
+    <string name="flag_all_keyboards_t">全言語 Writing Tools</string>
+    <string name="flag_all_keyboards_d">ワイルドカード言語タグ</string>
+    <string name="writing_backend_t">AI 推論バックエンド</string>
+    <string name="backend_cloud">クラウド（Gboard サーバー）</string>
+    <string name="backend_aicore">端末内 Gemini Nano</string>
+    <string name="backend_astrea">Astrea プライベート推論（推奨）</string>
+    <string name="flag_multilingual_t">多言語入力</string>
+    <string name="flag_multilingual_d">言語を切り替えずに混在入力</string>
+    <string name="flag_floating_t">フローティングキーボード</string>
+    <string name="flag_floating_d">横向き/分割/フリーフォームで自動フロート</string>
+    <string name="flag_emoji_kitchen_t">Emoji Kitchen</string>
+    <string name="flag_emoji_kitchen_d">絵文字マッシュアップと絵文字検索 v2</string>
+    <string name="flag_access_point_t">メニューリデザイン</string>
+    <string name="flag_access_point_d">Silk テーマ / システムフォント / カスタムテーマ</string>
+    <string name="flag_metered_t">従量ネットでDL</string>
+    <string name="flag_metered_d">モバイルデータでも言語パックをダウンロード</string>
+    <string name="flag_privacy_t">テレメトリ無効化</string>
+    <string name="flag_privacy_d">学習キャッシュ / 統計 / ログ送信をオフ</string>
+    <string name="flag_rambler_t">Gemini Rambler 音声</string>
+    <string name="flag_rambler_d">Pixel のエージェント型音声入力（要動作確認）</string>
+    <string name="flag_rounded_t">丸キー（M3E）</string>
+    <string name="flag_rounded_d">Material 3 Expressive キーキャップ</string>
+    <string name="flag_word_learning_t">強化単語学習</string>
+    <string name="flag_word_learning_d">高速 OOV / 動的 LM / 概念予測</string>
+    <string name="flag_inline_t">インライン候補（実験的）</string>
+    <string name="flag_inline_d">デコーダ側インライン候補</string>
+    <string name="flag_tflite_t">TFLite エンジン（実験的）</string>
+    <string name="flag_tflite_d">ニューラル予測の高速化</string>
+    <string name="flag_chips_t">クリップボードチップ</string>
+    <string name="flag_chips_d">上の解放機能と相互排他</string>
+    <string name="custom_flags_t">カスタム flag（JSON）</string>
+    <string name="custom_flags_d">例: [{\"name\":\"enable_x\",\"type\":\"bool\",\"value\":\"true\"}]</string>
+
+    <string name="amoled_t">AMOLED 純黒</string>
+    <string name="amoled_d">ダークモードで黒サーフェスを強制</string>
+    <string name="emoji_alpha_t">候補絵文字を不透明化</string>
+    <string name="emoji_alpha_d">候補バーの絵文字を 100% アルファに</string>
+
+    <string name="password_keyboard_t">パスワード欄フルキーボード</string>
+    <string name="password_keyboard_d">⚠ 注意: Gboard がパスワードを記録する可能性</string>
+    <string name="punctuation_t">9 キー半角句読点</string>
+    <string name="punctuation_d">数字ページ: ，。 → , .、＋−×÷ キー</string>
+
+    <string name="toolbar_t">キーボードツールバー</string>
+    <string name="toolbar_d">ボールト / 貼り付け / 全選択 / 選択モード / カーソル / 取り消し</string>
+    <string name="toolbar_text1_t">テキストショートカット 1</string>
+    <string name="toolbar_text1_d">⭐ ボタンで挿入</string>
+    <string name="toolbar_text2_t">テキストショートカット 2</string>
+    <string name="toolbar_text2_d">⭐⭐ ボタンで挿入</string>
+    <string name="shot_capture_t">スクリーンショット収集</string>
+    <string name="shot_capture_d">Screenshots フォルダを監視してボールトへ</string>
+    <string name="shot_to_clipboard_t">スクショをクリップボードへ</string>
+    <string name="shot_to_clipboard_d">取り込んだスクショもクリップボードに複写</string>
+
+    <string name="gloss_t">候補対訳</string>
+    <string name="gloss_d">候補の下に対訳を表示（オフライン辞書）</string>
+    <string name="gloss_target_t">翻訳先言語</string>
+    <string name="gloss_target_d">zh / en / ja / de / fr / es / ru</string>
+    <string name="gloss_size_t">対訳フォントサイズ（sp）</string>
+    <string name="gloss_size_d">8-14</string>
+    <string name="gloss_banner_t">注入バナー</string>
+    <string name="gloss_banner_d">初回注入時にカプセル表示</string>
+
+    <string name="shuangpin_t">双拼キーガイド</string>
+    <string name="shuangpin_d">キーに声母/韻母を重ねる（Gboard の方案に追従）</string>
+    <string name="shuangpin_size_t">ガイドフォントサイズ（sp）</string>
+    <string name="shuangpin_size_d">7-17</string>
+    <string name="shuangpin_dynamic_t">動的ガイド</string>
+    <string name="shuangpin_dynamic_d">入力待ちの韻母だけ表示</string>
+    <string name="shuangpin_blank_t">主文字を隠す</string>
+    <string name="shuangpin_blank_d">双拼有効時に全拼音の文字を隠す</string>
+    <string name="shuangpin_letter_size_t">主文字サイズ（sp）</string>
+    <string name="shuangpin_letter_size_d">0 = 変更しない</string>
+    <string name="shuangpin_semicolon_t">セミコロンキー</string>
+    <string name="shuangpin_semicolon_d">浮動 ; ボタン（MS 方案用）</string>
+    <string name="emoji_suggest_t">柔軟な絵文字候補</string>
+    <string name="emoji_suggest_d">入力中に内蔵ピンイン→絵文字辞書</string>
+
+    <string name="rgb_t">RGB エフェクト（実験的）</string>
+    <string name="rgb_d">性能への影響が大きい</string>
+    <string name="rgb_effect_t">エフェクト</string>
+    <string name="rgb_effect_ripple">波紋</string>
+    <string name="rgb_effect_water">水滴</string>
+    <string name="rgb_effect_neon">ネオン稲妻</string>
+    <string name="rgb_effect_supernova">スーパーノヴァ</string>
+    <string name="rgb_effect_magma">溶岩</string>
+    <string name="rgb_effect_sonic">音波</string>
+    <string name="rgb_effect_blackhole">ブラックホール</string>
+    <string name="rgb_effect_rain">環境雨</string>
+    <string name="rgb_effect_chroma">レーザー chroma</string>
+    <string name="rgb_wave_speed_t">速度 %</string>
+    <string name="rgb_wave_speed_d">30-200</string>
+    <string name="rgb_trail_t">グライド軌跡</string>
+    <string name="rgb_trail_d">スワイプ中にネオン軌跡</string>
+    <string name="rgb_turbo_t">WPM 過熱</string>
+    <string name="rgb_turbo_d">高速入力時に激しく</string>
+    <string name="rgb_key_flow_t">キーキャップ流光</string>
+    <string name="rgb_key_flow_d">光帯がキーキャップを掃過</string>
+    <string name="rgb_border_t">枠線のみ</string>
+    <string name="rgb_border_d">キーキャップの輪郭だけ発光</string>
+    <string name="rgb_key_speed_t">流光速度 %</string>
+    <string name="rgb_key_speed_d">20-300</string>
+    <string name="rgb_glow_t">RGB アンダーグロー</string>
+    <string name="rgb_glow_d">キーボード下部の呼吸グロー</string>
+    <string name="rgb_color1_t">RGB プライマリ</string>
+    <string name="rgb_color2_t">RGB セカンダリ</string>
+    <string name="user_glossary_t">ユーザー対訳表（TSV）</string>
+    <string name="user_glossary_d">1 行: 単語&lt;TAB&gt;対訳、内蔵を上書き</string>
+
+    <string name="diag_service_t">LSPosed サービス</string>
+    <string name="diag_scope_t">Gboard スコープ</string>
+    <string name="diag_gboard_t">Gboard バージョン</string>
+    <string name="diag_gboard_missing">未検出（manifest queries で可視性確認）</string>
+    <string name="diag_switches_t">スイッチ概況</string>
+    <string name="diag_switches_summary">%1$d / %2$d 有効</string>
+    <string name="diag_compat_t">互換性マトリクス</string>
+    <string name="diag_compat_d">Gboard 版ごとのアンカー行列: compat-test/scan.py をオフライン実行、monitor ワークフローが compat-report.json を毎週更新</string>
+    <string name="diag_logs_t">トラブルシュートログ</string>
+    <string name="diag_logs_d">サブシステム別のインストール結果は LSPosed ログと logcat へ。PC で実行:</string>
+    <string name="diag_logs_cmd">adb logcat -s Switchboard</string>
+    <string name="act_copy">コピー</string>
+    <string name="act_copied">コピーしました</string>
+    <string name="credit_note">Switchboard は GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / RGB-studio の統合 · 100% ローカル</string>
+    <string name="chip_all">すべて</string>
+    <string name="chip_service">サービス</string>
+    <string name="chip_scope">スコープ</string>
+    <string name="menu_more">その他の操作</string>
+</resources>

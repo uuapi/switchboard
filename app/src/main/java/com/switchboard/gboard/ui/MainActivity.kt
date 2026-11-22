@@ -29,6 +29,26 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import com.switchboard.gboard.BuildConfig
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.switchboard.gboard.Config
@@ -36,6 +56,16 @@ import com.switchboard.gboard.R
 import com.switchboard.gboard.hook.ThemeInstaller
 import io.github.libxposed.service.XposedService
 import io.github.libxposed.service.XposedServiceHelper
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * Switchboard 设置 App（Jetpack Compose · Material 3）。
@@ -264,21 +294,15 @@ private fun SwitchboardApp(
 ) {
     var tab by remember { mutableIntStateOf(0) }
     var query by remember { mutableStateOf("") }
+    var chip by remember { mutableStateOf<Int?>(null) }
+    var menuOpen by remember { mutableStateOf(false) }
 
+    val serviceOk = service != null
     val inScope = runCatching {
         service?.scope?.contains(Config.GBOARD_PACKAGE)
     }.getOrDefault(null) == true
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.app_name)) },
-                actions = {
-                    TextButton(onClick = onExport) { Text(stringResource(R.string.act_export)) }
-                    TextButton(onClick = onImport) { Text(stringResource(R.string.act_import)) }
-                },
-            )
-        },
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
@@ -296,25 +320,120 @@ private fun SwitchboardApp(
             }
         },
     ) { padding ->
-        when (tab) {
-            // padding 必须应用到整个 Column：StatusHeader/SearchField 不吃
-            // inset 会被 TopAppBar 遮挡（状态文本与 Import 按钮不可见）
-            0 -> Column(Modifier.fillMaxSize().padding(padding)) {
-                StatusHeader(service != null, inScope, onRequestScope, onForceStop, onRestoreTheme)
-                SearchField(query) { query = it }
-                SettingsScreen(
-                    query = query,
-                    values = values,
-                    onWrite = onBindValue,
-                    modifier = Modifier.fillMaxSize(),
-                )
+        Column(Modifier.fillMaxSize().padding(padding)) {
+            // ---- Hero 头部 ----
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(52.dp)
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Image(
+                        painterResource(R.drawable.ic_launcher),
+                        contentDescription = null,
+                        modifier = Modifier.size(36.dp),
+                    )
+                }
+                Spacer(Modifier.width(12.dp))
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        stringResource(R.string.app_name),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Text(
+                        stringResource(R.string.restart_note, BuildConfig.VERSION_NAME),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+                Box {
+                    IconButton(onClick = { menuOpen = true }) {
+                        Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.menu_more))
+                    }
+                    DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.act_export)) },
+                            onClick = { onExport(); menuOpen = false },
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.act_import)) },
+                            onClick = { onImport(); menuOpen = false },
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.import_glossary)) },
+                            onClick = { onImportGlossary(); menuOpen = false },
+                        )
+                        HorizontalDivider()
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.scope_request)) },
+                            onClick = { onRequestScope(); menuOpen = false },
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.force_stop_gboard)) },
+                            onClick = { onForceStop(); menuOpen = false },
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.restore_theme)) },
+                            onClick = { onRestoreTheme(); menuOpen = false },
+                        )
+                    }
+                }
             }
-            else -> DiagnosticsScreen(
-                serviceBound = service != null,
-                inScope = inScope,
-                values = values,
-                modifier = Modifier.fillMaxSize().padding(padding),
-            )
+            // ---- 状态徽章 ----
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                StatusChip(stringResource(R.string.chip_service), serviceOk)
+                StatusChip(stringResource(R.string.chip_scope), inScope)
+            }
+            // ---- 内容 ----
+            Box(Modifier.weight(1f)) {
+                when (tab) {
+                    0 -> SettingsBody(
+                        query = query,
+                        onQueryChange = { query = it },
+                        chip = chip,
+                        onChipChange = { chip = it },
+                        values = values,
+                        onWrite = onBindValue,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                    else -> DiagnosticsScreen(
+                        serviceBound = serviceOk,
+                        inScope = inScope,
+                        values = values,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }
         }
     }
+}
+
+@Composable
+private fun StatusChip(label: String, ok: Boolean) {
+    AssistChip(
+        onClick = {},
+        label = { Text(label) },
+        leadingIcon = {
+            Icon(
+                if (ok) Icons.Filled.CheckCircle else Icons.Filled.Cancel,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+                tint = if (ok) Color(0xFF2EA043) else MaterialTheme.colorScheme.error,
+            )
+        },
+        colors = AssistChipDefaults.assistChipColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f),
+        ),
+    )
 }

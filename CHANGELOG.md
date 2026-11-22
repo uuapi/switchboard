@@ -2,6 +2,25 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式。
 
+## [v0.4.0] — 多语言 + UI 重设计
+
+### 新增
+- **多语言适配**：新增日语 / 俄语 / 西班牙语完整翻译（含全部 179 条文案），
+  与既有简体中文 / 英文共 5 种语言；声明 `localeConfig`（Android 13+ 系统级
+  per-app 语言设置可用）。
+- **UI 重设计（Material 3 现代布局）**：
+  - Hero 头部：应用图标 + 名称 + 版本副标题 + **Service/Scope 状态徽章**；
+    Export / Import / 译词导入 / 作用域请求 / 强停 / 恢复主题 收进 ⋮ 溢出菜单
+  - 设置列表重构为 LazyColumn：**分类 FilterChip 横向过滤**（全部 + 9 个分区，
+    带图标）+ 分组圆角卡片（分区图标头 + 项目计数 + 行间细分隔线）+ 圆角胶囊搜索框
+  - 各分区配独立图标（SettingsModel Section 增加 icon 字段）
+  - 诊断页卡片加 leading 图标
+- 依赖：`material-icons-extended`（R8 裁剪后体积影响有限）
+
+### 修复
+- 主界面 StatusHeader 被 TopAppBar 遮挡（Scaffold padding 未覆盖），
+  状态文本与 Import 按钮文字不可见——重构后随 Hero 布局一并解决。
+
 ## [v0.3.3] — 移除 Termux 兼容
 
 ### 移除
