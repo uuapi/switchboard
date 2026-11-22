@@ -89,7 +89,13 @@ fun SettingsBody(
                     FilterChip(
                         selected = chip == si,
                         onClick = { onChipChange(if (chip == si) null else si) },
-                        label = { Text(stringResource(sec.title)) },
+                        label = {
+                            Text(
+                                stringResource(sec.title),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         leadingIcon = {
                             Icon(sec.icon, null, Modifier.size(16.dp))
                         },
@@ -150,8 +156,10 @@ private fun SectionCard(
                 stringResource(section.title),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f),
             )
-            Spacer(Modifier.weight(1f))
             Text(
                 "${items.size}",
                 style = MaterialTheme.typography.labelSmall,

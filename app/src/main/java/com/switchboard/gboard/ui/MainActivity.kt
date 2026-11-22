@@ -30,6 +30,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -350,7 +352,8 @@ private fun SwitchboardApp(
                         stringResource(R.string.restart_note, BuildConfig.VERSION_NAME),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
+                        // 俄/德等语言更长：允许折两行，避免关键提示被省略号吞掉
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
@@ -389,7 +392,11 @@ private fun SwitchboardApp(
             }
             // ---- 状态徽章 ----
             Row(
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    // 极端语言下徽章文字过长时允许横向滚动而不是挤出屏幕
+                    .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 StatusChip(stringResource(R.string.chip_service), serviceOk)
@@ -423,7 +430,9 @@ private fun SwitchboardApp(
 private fun StatusChip(label: String, ok: Boolean) {
     AssistChip(
         onClick = {},
-        label = { Text(label) },
+        label = {
+            Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        },
         leadingIcon = {
             Icon(
                 if (ok) Icons.Filled.CheckCircle else Icons.Filled.Cancel,
