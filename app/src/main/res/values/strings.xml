@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MGGA</string>
+    <string name="app_name">Switchboard</string>
     <string name="app_desc">Make Gboard Great Again</string>
     <string name="xposed_desc">Make Gboard Great Again — 剪贴板解锁、Flag 覆写、AMOLED 纯黑、密码框全键盘、九键半角标点、双拼提示、离线译词、工具栏、Termux、RGB 灯效</string>
 
@@ -46,9 +46,9 @@
 
     <!-- 通用 -->
     <string name="verbose_log_t">详细日志</string>
-    <string name="verbose_log_d">输出调试日志到 logcat -s MGGA</string>
+    <string name="verbose_log_d">输出调试日志到 logcat -s Switchboard</string>
     <string name="startup_toast_t">注入提示</string>
-    <string name="startup_toast_d">Gboard 启动时短暂提示 MGGA 已注入</string>
+    <string name="startup_toast_d">Gboard 启动时短暂提示 Switchboard 已注入</string>
 
     <!-- 剪贴板 -->
     <string name="clipboard_enabled_t">启用剪贴板增强</string>
@@ -199,8 +199,8 @@
     <string name="diag_compat_d">各功能对 Gboard 版本的锚点依赖可用 compat-test/scan.py 离线扫描；哨兵 workflow 每周自动更新仓库内的 compat-report.json</string>
     <string name="diag_logs_t">排查日志</string>
     <string name="diag_logs_d">注入成败逐子系统输出到 LSPosed 日志与 logcat。复制命令后在电脑执行：</string>
-    <string name="diag_logs_cmd">adb logcat -s MGGA</string>
+    <string name="diag_logs_cmd">adb logcat -s Switchboard</string>
     <string name="act_copy">复制</string>
     <string name="act_copied">已复制</string>
-    <string name="credit_note">MGGA 整合自 GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / termux-ime / RGB-studio · 100% 本地</string>
+    <string name="credit_note">Switchboard 整合自 GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / termux-ime / RGB-studio · 100% 本地</string>
 </resources>

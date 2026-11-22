@@ -1,10 +1,10 @@
-MGGA — Make Gboard Great Again
+Switchboard — Flip every switch on Gboard
 Copyright (c) 2026 uuapi
 
 Dual licensing notice
 =====================
 
-1. Original MGGA code (all files NOT listed below) is licensed under the MIT License:
+1. Original Switchboard code (all files NOT listed below) is licensed under the MIT License:
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,8 @@ Dual licensing notice
    THE SOFTWARE.
 
 2. Files ported from gboard-shuangpin-hints and gboard-gloss
-   (app/src/main/java/com/mgga/gboard/hook/shuangpin/* and
-    app/src/main/java/com/mgga/gboard/hook/gloss/*,
+   (app/src/main/java/com/switchboard/gboard/hook/shuangpin/* and
+    app/src/main/java/com/switchboard/gboard/hook/gloss/*,
    license headers preserved in each file) remain under the
    GNU Lesser General Public License v2.1 (LGPL-2.1-or-later):
 

@@ -15,5 +15,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MGGA"
+rootProject.name = "Switchboard"
 include(":app")

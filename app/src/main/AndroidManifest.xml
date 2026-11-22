@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:description="@string/app_desc"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/Theme.MGGA"
+        android:theme="@style/Theme.Switchboard"
         android:supportsRtl="true">
 
         <!-- 兼容旧版 LSPosed/管理器识别；新 API 由 META-INF/xposed 声明 -->

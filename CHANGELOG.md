@@ -2,6 +2,23 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式。
 
+## [v0.3.0] — 更名 Switchboard
+
+### 变更
+- 项目更名：**MGGA → Switchboard**（「把 Gboard 的每一个开关，都交到你手里」）
+  - applicationId / namespace：`com.mgga.gboard` → `com.switchboard.gboard`
+  - remote preferences group：`mgga` → `switchboard`（升级后开关需重新调整；
+    可先在旧版导出配置 JSON，更新后粘贴导入）
+  - 日志 TAG：`MGGA` → `Switchboard`（排查命令 `logcat -s Switchboard`）
+  - 保险库数据库 / 覆盖层 tag / 文件路径等内部标识同步迁移
+
+### 修复
+- **工具栏注入必然失败**（模拟器真机测试发现）：`ToolbarHook.injectToolbar` 在
+  `container.addView(inputView)` 之前未先执行 `frame.removeView(inputView)`，
+  抛 `IllegalStateException: The specified child already has a parent`，
+  任何 Gboard 版本上工具栏都无法出现（此前被 FeatureHub 的 try/catch 隔离掩盖）。
+  修复后注入成功，工具栏 UI 正常可见。
+
 ## [v0.2.0] — 现代 UI 与工程化
 
 ### 新增

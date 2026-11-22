@@ -1,5 +1,5 @@
 {
-  "_comment": "MGGA flag 预设表。布尔值或 \"*\"（语言类自动映射）。group 对应设置开关 flag_<group>；writing_v2 额外要求 flag_writing_tools。特殊 Long/字符串 flag（backend、模型版本等）在 FlagEngine 中硬编码处理。",
+  "_comment": "Switchboard flag 预设表。布尔值或 \"*\"（语言类自动映射）。group 对应设置开关 flag_<group>；writing_v2 额外要求 flag_writing_tools。特殊 Long/字符串 flag（backend、模型版本等）在 FlagEngine 中硬编码处理。",
   "groups": [
     {
       "key": "ai",

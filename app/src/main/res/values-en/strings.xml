@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MGGA</string>
+    <string name="app_name">Switchboard</string>
     <string name="app_desc">Make Gboard Great Again</string>
     <string name="xposed_desc">Make Gboard Great Again — clipboard unlock, flag overrides, AMOLED black, full keyboard in password fields, 9-key halfwidth punctuation, shuangpin hints, offline gloss, toolbar, Termux, RGB effects</string>
 
     <string name="service_bound_ok">Connected to LSPosed service</string>
-    <string name="service_bound_fail">LSPosed service not connected. Enable MGGA in LSPosed first.</string>
+    <string name="service_bound_fail">LSPosed service not connected. Enable Switchboard in LSPosed first.</string>
     <string name="scope_missing">, ⚠ Gboard scope not granted yet</string>
     <string name="scope_included">, Gboard already in scope ✓</string>
     <string name="scope_request">Request Gboard scope</string>
@@ -43,7 +43,7 @@
     <string name="tab_diagnostics">Diagnostics</string>
 
     <string name="verbose_log_t">Verbose logging</string>
-    <string name="verbose_log_d">Debug logs via logcat -s MGGA</string>
+    <string name="verbose_log_d">Debug logs via logcat -s Switchboard</string>
     <string name="startup_toast_t">Injection toast</string>
     <string name="startup_toast_d">Brief toast when Gboard starts</string>
 
@@ -187,8 +187,8 @@
     <string name="diag_compat_d">Anchor matrix per Gboard version: run compat-test/scan.py offline; the monitor workflow refreshes compat-report.json weekly</string>
     <string name="diag_logs_t">Troubleshooting logs</string>
     <string name="diag_logs_d">Per-subsystem install results go to LSPosed logs and logcat. Run on your PC:</string>
-    <string name="diag_logs_cmd">adb logcat -s MGGA</string>
+    <string name="diag_logs_cmd">adb logcat -s Switchboard</string>
     <string name="act_copy">Copy</string>
     <string name="act_copied">Copied</string>
-    <string name="credit_note">MGGA integrates GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / termux-ime / RGB-studio · 100% local</string>
+    <string name="credit_note">Switchboard integrates GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / termux-ime / RGB-studio · 100% local</string>
 </resources>

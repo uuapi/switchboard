@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""MGGA Gboard 兼容性扫描器 v2。
+"""Switchboard Gboard 兼容性扫描器 v2。
 
-对若干 Gboard APK 做静态 DEX 扫描，验证 MGGA 各 hook 锚点在该版本是否存在。
+对若干 Gboard APK 做静态 DEX 扫描，验证 Switchboard 各 hook 锚点在该版本是否存在。
 不执行任何 APK 代码。
 
 v2: 解析 class_defs → class_data，获得**定义级**方法/字段表（此前只查字符串池，

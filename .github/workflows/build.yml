@@ -1,4 +1,4 @@
-name: Build MGGA
+name: Build Switchboard
 
 on:
   push:
@@ -34,13 +34,13 @@ jobs:
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: mgga-debug
+          name: switchboard-debug
           path: app/build/outputs/apk/debug/*.apk
 
       - name: Upload release APK
         uses: actions/upload-artifact@v4
         with:
-          name: mgga-release
+          name: switchboard-release
           path: app/build/outputs/apk/release/*.apk
 
       - name: Release on tag

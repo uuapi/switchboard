@@ -1,10 +1,10 @@
 <div align="center">
 
-# ⌨️ MGGA
+# ⌨️ Switchboard
 
-### **M**ake **G**board **G**reat **A**gain
+### Flip Every Switch on Gboard
 
-*十二个 Gboard 模块的精华，一次整合。*
+*十二个 Gboard 模块的精华，接进同一块总机。*
 
 [![Platform](https://img.shields.io/badge/platform-Android_8.0%2B-3DDC84?logo=android&logoColor=white)](#)
 [![LSPosed](https://img.shields.io/badge/LSPosed-libxposed_API_102-00B0FF)](https://github.com/libxposed/api)
@@ -22,7 +22,7 @@
 
 ## 目录
 
-- [为什么是 MGGA](#为什么是-mgga)
+- [为什么是 Switchboard](#为什么是-switchboard)
 - [功能全景](#功能全景)
 - [架构设计](#架构设计)
 - [技术要点](#技术要点)
@@ -34,13 +34,13 @@
 
 ---
 
-## 为什么是 MGGA
+## 为什么是 Switchboard
 
 Gboard 是 Android 上最强的输入法之一，但大量能力被 Google 的服务端灰度开关（Phenotype flags）和
 设备锁锁住。社区已经为此写出了十几个优秀的 Xposed 模块 —— 每个解决一个痛点，装齐它们意味着
 12 个常驻模块、12 套配置通道和 12 份版本失效风险。
 
-**MGGA 把它们合并成一个模块**，并做了三件原模块们没做的事：
+**Switchboard 把它们合并成一个模块**，并做了三件原模块们没做的事：
 
 1. **统一到 libxposed 新 API 102** —— 配置走框架 remote preferences，不再有
    `MODE_WORLD_READABLE` / chmod / 多通道兜底的补丁式跨进程通信[^1]
@@ -72,7 +72,7 @@ Gboard 是 Android 上最强的输入法之一，但大量能力被 Google 的�
 
 ```mermaid
 flowchart LR
-    subgraph APP["📱 MGGA 设置 App"]
+    subgraph APP["📱 Switchboard 设置 App"]
         UI["设置界面<br/>70+ 独立开关"]
     end
 
@@ -82,7 +82,7 @@ flowchart LR
     end
 
     subgraph GB["⌨️ Gboard 进程 (com.google.android.inputmethod.latin)"]
-        M["MggaModule<br/>onPackageLoaded"]
+        M["SwitchboardModule<br/>onPackageLoaded"]
         H["FeatureHub<br/>独立 try/catch 隔离"]
         F["🚩 FlagEngine<br/>DexKit + flag 覆写"]
         C["📋 ClipboardHook"]
@@ -103,7 +103,7 @@ flowchart LR
 ```
 
 **配置通道**：App 侧经 `XposedServiceHelper` 写入框架托管的 remote preferences，
-Gboard 进程内 `getRemotePreferences("mgga")` 只读 + 2s TTL 缓存。
+Gboard 进程内 `getRemotePreferences("switchboard")` 只读 + 2s TTL 缓存。
 相比传统 `XSharedPreferences` + chmod 方案，无需放宽文件权限，配置由框架跨进程同步[^1][^2]。
 
 ## 技术要点
@@ -111,7 +111,7 @@ Gboard 进程内 `getRemotePreferences("mgga")` 只读 + 2s TTL 缓存。
 <details>
 <summary><b>① Flag 覆写引擎 —— 用字符串特征对抗混淆</b></summary>
 
-Gboard 的服务端开关经由一个混淆的泛型读取器（返回 `Object`）分发。MGGA 用 DexKit
+Gboard 的服务端开关经由一个混淆的泛型读取器（返回 `Object`）分发。Switchboard 用 DexKit
 按多路字符串特征（`"Invalid flag: "` → `"Invalid flag:"` → `"HermeticFileOverrides"` →
 `"PhenotypeFlag"`）定位它[^4]，扫描结果以 `DexMethod.serialize()` 按 Gboard `versionCode`
 缓存 —— 版本更新自动重扫。
@@ -181,8 +181,8 @@ flag 名从混淆对象的 `a` 字段读取（失败沿继承链找首个 String
 ## 构建与安装
 
 ```bash
-git clone https://github.com/uuapi/mgga
-cd mgga
+git clone https://github.com/uuapi/switchboard
+cd switchboard
 ./gradlew :app:testDebugUnitTest   # JVM 单元测试（词典/语法/标点/敏感规则）
 ./gradlew :app:assembleDebug       # 或 assembleRelease（已用 debug key 签名可直接安装）
 ```
@@ -195,7 +195,7 @@ CI（`build.yml`）在每次 push 时跑单测 + 双构建，打 `v*` tag 自动
 - libxposed API 102 以本地 jar 形式编译（`app/libs/`，Maven 上 `interface:102` AAR 元数据要求
   尚未公开发布的 SDK 37，做法同 [gboard-termux-ime](#参考文献)）[^13]
 
-**安装**：APK → LSPosed 启用 → 打开 MGGA 点「请求 Gboard 作用域」（API 102 `requestScope`）
+**安装**：APK → LSPosed 启用 → 打开 Switchboard 点「请求 Gboard 作用域」（API 102 `requestScope`）
 → 强停 Gboard → 设置页按需开关。
 
 ## 常见问题
@@ -208,7 +208,7 @@ CI（`build.yml`）在每次 push 时跑单测 + 双构建，打 `v*` tag 自动
 
 <details>
 <summary>为什么没有语音识别换源 / 在线翻译？</summary>
-刻意移除。MGGA 坚持 100% 本地：不申请 INTERNET 权限、不把输入内容交给任何云端引擎。
+刻意移除。Switchboard 坚持 100% 本地：不申请 INTERNET 权限、不把输入内容交给任何云端引擎。
 需要这些功能请使用上游 <a href="#参考文献">gboard-voice-bridge</a> / <a href="#参考文献">gboard-gloss</a>。
 </details>
 
@@ -224,7 +224,7 @@ CI（`build.yml`）在每次 push 时跑单测 + 双构建，打 `v*` tag 自动
 
 ## 参考文献
 
-MGGA 站在以下项目的肩膀上，特此致谢：
+Switchboard 站在以下项目的肩膀上，特此致谢：
 
 | # | 项目 | 用途 |
 |---|---|---|
@@ -247,7 +247,7 @@ MGGA 站在以下项目的肩膀上，特此致谢：
 
 ## 许可证
 
-- MGGA 原创代码：**MIT**
+- Switchboard 原创代码：**MIT**
 - 移植自 [gboard-gloss](https://github.com/ziyuw-Plank/gboard-gloss) 与
   [gboard-shuangpin-hints](https://github.com/rikumi/gboard-shuangpin-hints) 的文件
   （`hook/gloss/*`、`hook/shuangpin/*`，文件头有标注）：沿用其 **LGPL-2.1**，

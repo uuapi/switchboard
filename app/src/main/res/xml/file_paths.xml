@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <files-path name="mgga_vault_images" path="mgga_vault_images/" />
+    <files-path name="switchboard_vault_images" path="switchboard_vault_images/" />
     <external-path name="screenshots" path="." />
 </paths>
