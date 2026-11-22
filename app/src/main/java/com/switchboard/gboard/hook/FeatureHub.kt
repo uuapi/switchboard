@@ -27,7 +27,6 @@ object FeatureHub {
         safe("shuangpin") { if (Config.shuangpinEnabled) ShuangpinHook.install(module, cl) }
         safe("gloss") { if (Config.glossEnabled) GlossHook.install(module, cl) }
         safe("toolbar") { if (Config.toolbarEnabled) ToolbarHook.install(module, cl) }
-        safe("termux") { if (Config.termuxEnabled) TermuxHook.install(module, cl) }
         safe("rgb") { if (Config.rgbEnabled) RgbHook.install(module, cl) }
 
         MLog.i("Hub", "install end")

@@ -114,7 +114,6 @@ object SettingsModel {
             Item.Switch("emoji_suggest_enabled", R.string.emoji_suggest_t, R.string.emoji_suggest_d),
         )),
         Section(R.string.sec_misc, listOf(
-            Item.Switch("termux_enabled", R.string.termux_t, R.string.termux_d, true),
             Item.Switch("rgb_enabled", R.string.rgb_t, R.string.rgb_d),
             Item.Choice("rgb_effect", R.string.rgb_effect_t, listOf(
                 "ripple" to R.string.rgb_effect_ripple,

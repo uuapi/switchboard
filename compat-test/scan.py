@@ -30,7 +30,6 @@ ANCHORS = [
     ("clipboard_provider", "cls", "Lcom/google/android/apps/inputmethod/libs/clipboard/ClipboardContentProvider;", "Clipboard: 剪贴板 Provider 类"),
     ("softkey_view", "cls", "Lcom/google/android/libraries/inputmethod/widgets/SoftKeyView;", "通用: 键位视图（双拼/译词/九键键面）"),
     ("softkey_def", "cls", "Lcom/google/android/libraries/inputmethod/metadata/SoftKeyDef;", "通用: 键位元数据"),
-    ("latin_ime", "cls", "Lcom/android/inputmethod/latin/LatinIME;", "Termux: IME 服务类"),
     ("number_mode_kb", "cls", "Lcom/google/android/apps/inputmethod/latin/keyboard/LatinKeyboardWithNumberMode;", "九键标点: 数字页键盘类"),
     ("keyboard_state_method", "method", ("Lcom/google/android/libraries/inputmethod/keyboard/impl/Keyboard;", "cF"), "九键标点: 状态变更方法 cF"),
     ("keyboard_state_field", "field", ("Lcom/google/android/libraries/inputmethod/keyboard/impl/Keyboard;", "F"), "九键标点: 状态字段 F"),

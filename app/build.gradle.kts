@@ -12,8 +12,8 @@ android {
         applicationId = "com.switchboard.gboard"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "0.3.2"
+        versionCode = 6
+        versionName = "0.3.3"
     }
 
     buildTypes {
@@ -50,7 +50,7 @@ android {
 dependencies {
     // libxposed 新 API 102：运行时由 LSPosed 提供。
     // 用本地 jar 而非 Maven AAR —— interface:102.0.0 的 AAR 元数据要求 compileSdk 37
-    // （公共仓库无 android-37 平台），参照 gboard-termux-ime 的做法直接对 jar 编译。
+    // （公共仓库无 android-37 平台），参照上游 libxposed 模块的做法直接对 jar 编译。
     compileOnly(files("libs/libxposed-api-102.0.0.jar"))
     // App 侧通过 XposedServiceHelper 读写 remote preferences，需要打入 APK
     implementation(libs.libxposed.service)

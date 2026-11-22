@@ -171,7 +171,6 @@ object Config {
     val glossEnabled get() = bool("gloss_enabled", false)
     val shuangpinEnabled get() = bool("shuangpin_enabled", false)
     val rgbEnabled get() = bool("rgb_enabled", false)
-    val termuxEnabled get() = bool("termux_enabled", true)
     val startupToast get() = bool("startup_toast", false)
     val verboseLog get() = bool("verbose_log", false)
 

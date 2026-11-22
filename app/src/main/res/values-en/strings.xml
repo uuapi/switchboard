@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Switchboard</string>
     <string name="app_desc">Make Gboard Great Again</string>
-    <string name="xposed_desc">Make Gboard Great Again — clipboard unlock, flag overrides, AMOLED black, full keyboard in password fields, 9-key halfwidth punctuation, shuangpin hints, offline gloss, toolbar, Termux, RGB effects</string>
+    <string name="xposed_desc">Flip every switch on Gboard — clipboard unlock, flag overrides, AMOLED black, full keyboard in password fields, 9-key halfwidth punctuation, shuangpin hints, offline gloss, toolbar, RGB effects</string>
 
     <string name="service_bound_ok">Connected to LSPosed service</string>
     <string name="service_bound_fail">LSPosed service not connected. Enable Switchboard in LSPosed first.</string>
@@ -144,8 +144,6 @@
     <string name="emoji_suggest_t">Flexible emoji suggestions</string>
     <string name="emoji_suggest_d">Builtin pinyin → emoji lexicon while composing</string>
 
-    <string name="termux_t">Termux compatibility</string>
-    <string name="termux_d">Pinyin works in Termux + auto language switching</string>
     <string name="rgb_t">RGB effects (experimental)</string>
     <string name="rgb_d">Noticeable performance cost</string>
     <string name="rgb_effect_t">RGB effect</string>
@@ -190,5 +188,5 @@
     <string name="diag_logs_cmd">adb logcat -s Switchboard</string>
     <string name="act_copy">Copy</string>
     <string name="act_copied">Copied</string>
-    <string name="credit_note">Switchboard integrates GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / termux-ime / RGB-studio · 100% local</string>
+    <string name="credit_note">Switchboard integrates GboardHook / KeyFlux / FuckGboard / material-expressive-black / ForceGboardInputType / gboardtweak / gboard-gloss / Gboard+ / shuangpin-hints / RGB-studio · 100% local</string>
 </resources>

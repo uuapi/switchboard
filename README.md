@@ -4,7 +4,7 @@
 
 ### Flip Every Switch on Gboard
 
-*十二个 Gboard 模块的精华，接进同一块总机。*
+*十一个 Gboard 模块的精华，接进同一块总机。*
 
 [![Platform](https://img.shields.io/badge/platform-Android_8.0%2B-3DDC84?logo=android&logoColor=white)](#)
 [![LSPosed](https://img.shields.io/badge/LSPosed-libxposed_API_102-00B0FF)](https://github.com/libxposed/api)
@@ -38,7 +38,7 @@
 
 Gboard 是 Android 上最强的输入法之一，但大量能力被 Google 的服务端灰度开关（Phenotype flags）和
 设备锁锁住。社区已经为此写出了十几个优秀的 Xposed 模块 —— 每个解决一个痛点，装齐它们意味着
-12 个常驻模块、12 套配置通道和 12 份版本失效风险。
+11 个常驻模块、11 套配置通道和 11 份版本失效风险。
 
 **Switchboard 把它们合并成一个模块**，并做了三件原模块们没做的事：
 
@@ -62,7 +62,6 @@ Gboard 是 Android 上最强的输入法之一，但大量能力被 Google 的�
 | 🧰 **工具栏** | 剪贴板保险库（文本+图片）/ 粘贴 / 全选 / **选择模式** / 光标导航 / 撤销（环形缓冲+摇一摇）/ 文本快捷 / 截图自动入库 / Auto Expand 接管 | `setInputView` 注入 + `InputConnection` 包装 + SQLite | [Gboard+](#参考文献) |
 | 🌐 **译词** | 候选词下方叠加译文（12 组离线词典、构词回退、DP 分词组合、语法修正、用户词表导入） | `SoftKeyDef` 签名匹配 + 纯离线词典管线 + 绘制 | [gboard-gloss](#参考文献) |
 | 🔤 **双拼** | 键帽声/韵母提示（6 方案、动态提示、主字母隐藏/字号、分号键、emoji 联想） | `SoftKeyView` overlay + composing 跟踪 | [shuangpin-hints](#参考文献) [fcitx/libime](#参考文献) |
-| 🖥 **终端** | Termux 拼音正常输入 + 进出终端自动切换语言 | `LatinIME` 状态机 + `EditorInfo` 恢复 | [gboard-termux-ime](#参考文献) |
 | ✨ **灯效** | 9 种 RGB 特效 + 键帽流光（可仅描边）+ 滑行轨迹 + WPM 过热 + 底光 + root 恢复原厂主题 | Canvas overlay + 键帽矩形扫描 | [gboard-RGB-studio](#参考文献) |
 | ⚙️ **工具** | 一键请求作用域 / 强停 Gboard / 注入提示 | libxposed `requestScope`[^1] | — |
 
@@ -92,14 +91,13 @@ flowchart LR
         S["🔤 ShuangpinHook"]
         G["🌐 GlossHook"]
         T["🧰 ToolbarHook"]
-        X["🖥 TermuxHook"]
         R["✨ RgbHook"]
     end
 
     UI -->|"写配置"| SVC
     SVC -->|"推送"| M
     M --> RT --> H
-    H --> F & C & A & I & P & S & G & T & X & R
+    H --> F & C & A & I & P & S & G & T & R
 ```
 
 **配置通道**：App 侧经 `XposedServiceHelper` 写入框架托管的 remote preferences，
@@ -129,7 +127,7 @@ flag 名从混淆对象的 `a` 字段读取（失败沿继承链找首个 String
 | 层级 | 手段 | 采用者 |
 |---|---|---|
 | 动态定位 | DexKit 字符串特征 + versionCode 缓存 | Flag 引擎、剪贴板、保存时长 |
-| 只用稳定 API | 仅 hook 框架层（`InputMethodService` / `TypedArray` / `EditorInfo`） | AMOLED、密码框键盘、工具栏、Termux、RGB |
+| 只用稳定 API | 仅 hook 框架层（`InputMethodService` / `TypedArray` / `EditorInfo`） | AMOLED、密码框键盘、工具栏、RGB |
 | 多版本候选表 | 混淆类名按版本枚举 + `LatinPrimeKeyboard` 静态字段扫描兜底 | FuckGboard 路线 flag 类 |
 
 任一子系统失效只影响自身（`FeatureHub` 独立 try/catch），不影响其余功能。
@@ -167,7 +165,6 @@ flag 名从混淆对象的 `a` 字段读取（失败沿继承链找首个 String
 | `"Invalid flag: "` 特征 | Flag 引擎 | ✓ | ✓ |
 | `ClipboardContentProvider` | 剪贴板解除 | ✓ | ✓ |
 | `SoftKeyView` / `SoftKeyDef` | 双拼 · 译词 | ✓ / ✗* | ✓ / ✓ |
-| `LatinIME` | Termux | ✓ | ✓ |
 | `LatinKeyboardWithNumberMode` + `aekp` | 九键标点 | ✓ / ✗ | ✓ / ✓ |
 | retention 特征 | 保存天数 | ✗ | ✗ |
 
@@ -193,7 +190,7 @@ CI（`build.yml`）在每次 push 时跑单测 + 双构建，打 `v*` tag 自动
 
 - 依赖：JDK 21 · Android SDK 36 · AGP 8.9（Gradle wrapper 自动就位）
 - libxposed API 102 以本地 jar 形式编译（`app/libs/`，Maven 上 `interface:102` AAR 元数据要求
-  尚未公开发布的 SDK 37，做法同 [gboard-termux-ime](#参考文献)）[^13]
+  尚未公开发布的 SDK 37，参照上游 libxposed 模块的做法直接对 jar 编译）
 
 **安装**：APK → LSPosed 启用 → 打开 Switchboard 点「请求 Gboard 作用域」（API 102 `requestScope`）
 → 强停 Gboard → 设置页按需开关。
@@ -240,10 +237,9 @@ Switchboard 站在以下项目的肩膀上，特此致谢：
 | [10] | [ziyuw-Plank/gboard-gloss](https://github.com/ziyuw-Plank/gboard-gloss) | 词典资产与离线翻译管线、`SoftKeyDef` 签名匹配、横幅 |
 | [11] | [kvmy666/Gboard (Gboard+)](https://github.com/kvmy666/Gboard) | 工具栏/保险库/撤销/光标、纯框架层 hook 范式 |
 | [12] | [rikumi/gboard-shuangpin-hints](https://github.com/rikumi/gboard-shuangpin-hints) (LGPL-2.1) | 双拼方案引擎、`HintDrawable` 绘制、DeferredHooks 思路 |
-| [13] | [yapixel/gboard-termux-ime](https://github.com/yapixel/gboard-termux-ime) | Termux 状态机、API 102 jar 编译方式 |
-| [14] | [m4mental/gboard-RGB-studio](https://github.com/m4mental/gboard-RGB-studio) | 灯效/键帽流光/恢复主题思路 |
-| [15] | [fcitx/libime](https://github.com/fcitx/libime) (LGPL-2.1) | 双拼方案数据（`shuangpindata.h`） |
-| [16] | CC-CEDICT · JMdict · FreeDict | 离线词典数据源（经 gboard-gloss 预处理） |
+| [13] | [m4mental/gboard-RGB-studio](https://github.com/m4mental/gboard-RGB-studio) | 灯效/键帽流光/恢复主题思路 |
+| [14] | [fcitx/libime](https://github.com/fcitx/libime) (LGPL-2.1) | 双拼方案数据（`shuangpindata.h`） |
+| [15] | CC-CEDICT · JMdict · FreeDict | 离线词典数据源（经 gboard-gloss 预处理） |
 
 ## 许可证
 

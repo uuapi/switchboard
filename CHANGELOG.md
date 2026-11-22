@@ -2,6 +2,18 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式。
 
+## [v0.3.3] — 移除 Termux 兼容
+
+### 移除
+- **Termux 中文兼容**（gboard-termux-ime 移植）：进出终端自动切换语言、
+  终端内 EditorInfo 归一化。设置项 `termux_enabled` 一并移除，
+  升级后旧配置中的该键自动忽略。
+- compat-test 锚点 `latin_ime` 随之移除（仅服务于 Termux hook）。
+
+### 文档
+- README 功能表 / 架构图 / 参考文献同步更新（模块计数 12 → 11）；
+  `xposed_desc` 修正为新项目口号。
+
 ## [v0.3.2] — 配置持久化兜底
 
 ### 修复
