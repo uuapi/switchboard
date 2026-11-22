@@ -35,7 +35,7 @@ object InputTypeHook {
                         info.inputType = rewritten
                         val newArgs = chain.getArgs().toTypedArray()
                         newArgs[0] = info
-                        return@intercept chain.proceedWith(newArgs)
+                        return@intercept chain.proceedWith(chain.thisObject, newArgs)
                     }
                 }
                 chain.proceed()

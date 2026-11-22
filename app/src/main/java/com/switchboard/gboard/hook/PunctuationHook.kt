@@ -65,7 +65,7 @@ object PunctuationHook {
                     module.hook(m).intercept { chain ->
                         val newArgs = chain.getArgs().toTypedArray()
                         transformCommit(newArgs)
-                        chain.proceedWith(newArgs)
+                        chain.proceedWith(chain.thisObject, newArgs)
                     }
                     MLog.d(GROUP, "commitText hooked on $name")
                 }
@@ -85,7 +85,7 @@ object PunctuationHook {
             module.hook(m).intercept { chain ->
                 val newArgs = chain.getArgs().toTypedArray()
                 transformCommit(newArgs)
-                chain.proceedWith(newArgs)
+                chain.proceedWith(chain.thisObject, newArgs)
             }
             count++
         }
