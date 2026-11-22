@@ -2,6 +2,18 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式。
 
+## [v0.3.1] — 真机测试修复轮
+
+### 修复
+- **剪贴板敏感判定误杀（严重）**：insert 扫描用 `getAsString` 遍历所有列，
+  13 位毫秒时间戳列命中"12-19 位纯数字 = 卡号"规则，导致**所有**剪贴板记录
+  （含正常文本）被拦截、历史永远为空。现在只检查 String 类型的值。
+  （模拟器真机测试发现；已补回归测试）
+- **`proceedWith` 单参误用（4 处）**：libxposed API 无 vararg 重载，
+  原写法把整个参数数组当作单个参数传入，query 调用报
+  `Expected receiver ... but got Object[]`。改为 `proceedWith(thisObject, args)`。
+  涉及 ClipboardHook.query、PunctuationHook ×2、InputTypeHook。
+
 ## [v0.3.0] — 更名 Switchboard
 
 ### 变更
