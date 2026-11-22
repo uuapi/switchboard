@@ -1,14 +1,23 @@
 package com.switchboard.gboard
 
+import android.content.Context
 import android.content.SharedPreferences
+import com.switchboard.gboard.hook.AppHooks
 import io.github.libxposed.api.XposedModule
+import java.io.File
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Hook 侧配置中心。
  *
- * 数据源是 libxposed 新 API 的 remote preferences（group = "switchboard"）：
+ * 主数据源是 libxposed 新 API 的 remote preferences（group = "switchboard"）：
  * 模块 App 通过 XposedServiceHelper 写入，Gboard 进程内只读。
- * 这里做 2 秒 TTL 缓存，避免高频 hook 每次都穿透。
+ *
+ * 本地缓存兜底：Vector 2.2 的 remote preferences 是内存态（探针实验确认无落盘），
+ * 设备重启后 daemon 丢失全部键、所有开关回默认。因此这里把最近读到的每个键
+ * 镜像到 Gboard 私有目录的缓存文件；remote prefs 缺键（重启后）时自动回退缓存，
+ * 用户无感知。用户在 App 中改任意开关都会重新覆盖缓存。
  */
 object Config {
     const val PREF_GROUP = "switchboard"
@@ -18,32 +27,135 @@ object Config {
 
     @Volatile
     private var prefs: SharedPreferences? = null
-    @Volatile
-    private var loadedAt = 0L
 
-    private const val TTL_MS = 2000L
+    private val mem = ConcurrentHashMap<String, String>()
+    private val flushing = AtomicBoolean(false)
+    @Volatile
+    private var cacheFile: File? = null
 
     fun bind(module: XposedModule) {
         synchronized(this) {
             prefs = module.getRemotePreferences(PREF_GROUP)
-            loadedAt = System.currentTimeMillis()
+        }
+        AppHooks.onContextReady { ctx -> initCache(ctx) }
+    }
+
+    private fun initCache(ctx: Context) {
+        try {
+            val f = File(ctx.filesDir, "switchboard_config.cache")
+            cacheFile = f
+            if (f.exists()) {
+                f.readLines().forEach { line ->
+                    val i = line.indexOf('|')
+                    if (i > 0) mem[line.substring(0, i)] = line.substring(i + 1)
+                }
+            }
+        } catch (_: Throwable) {
         }
     }
 
-    private val sp: SharedPreferences?
-        get() {
-            synchronized(this) {
-                val now = System.currentTimeMillis()
-                val cur = prefs
-                if (cur != null && now - loadedAt < TTL_MS) return cur
-                return cur
-            }
-        }
+    /**
+     * daemon 是否持有真实配置：App 每次 write 都会打 pref_sync_time 戳，
+     * daemon 重启丢失后该键归零（getLong 缺省 0），此时必须走缓存而不是
+     * 信任 remote prefs——Vector 的 contains() 对未设置键也会返回 true，
+     * 直接读会把默认值污染进缓存。
+     */
+    @Volatile
+    private var daemonSyncAt = 0L
+    @Volatile
+    private var daemonCheckAt = 0L
 
-    fun bool(key: String, def: Boolean): Boolean = sp?.getBoolean(key, def) ?: def
-    fun int(key: String, def: Int): Int = sp?.getInt(key, def) ?: def
-    fun long(key: String, def: Long): Long = sp?.getLong(key, def) ?: def
-    fun str(key: String, def: String): String = sp?.getString(key, def) ?: def
+    private fun daemonHasData(): Boolean {
+        val now = System.currentTimeMillis()
+        if (now - daemonCheckAt < 2000) return daemonSyncAt > 0
+        daemonCheckAt = now
+        daemonSyncAt = try {
+            prefs?.getLong("pref_sync_time", 0L) ?: 0L
+        } catch (_: Throwable) {
+            0L
+        }
+        return daemonSyncAt > 0
+    }
+
+    private fun remember(key: String, kind: Char, v: Any) {
+        val s = when (kind) {
+            'b' -> if (v as Boolean) "1" else "0"
+            'i', 'l' -> v.toString()
+            else -> v as String
+        }
+        if (mem.put(key, s) == s) return // 无变化，不落盘
+        val f = cacheFile ?: return
+        if (!flushing.compareAndSet(false, true)) return
+        Thread {
+            try {
+                val tmp = File(f.parentFile, f.name + ".tmp")
+                tmp.bufferedWriter().use { w -> mem.forEach { (k, v) -> w.write("$k|$v\n") } }
+                if (!tmp.renameTo(f)) {
+                    f.delete()
+                    tmp.renameTo(f)
+                }
+            } catch (_: Throwable) {
+            } finally {
+                flushing.set(false)
+            }
+        }.start()
+    }
+
+    fun bool(key: String, def: Boolean): Boolean {
+        val sp = prefs
+        if (sp != null && daemonHasData()) try {
+            if (sp.contains(key)) {
+                val v = sp.getBoolean(key, def)
+                remember(key, 'b', v)
+                return v
+            }
+        } catch (_: Throwable) {
+        }
+        mem[key]?.let { return it == "1" }
+        return def
+    }
+
+    fun int(key: String, def: Int): Int {
+        val sp = prefs
+        if (sp != null && daemonHasData()) try {
+            if (sp.contains(key)) {
+                val v = sp.getInt(key, def)
+                remember(key, 'i', v)
+                return v
+            }
+        } catch (_: Throwable) {
+        }
+        mem[key]?.let { it.toIntOrNull()?.let { v -> return v } }
+        return def
+    }
+
+    fun long(key: String, def: Long): Long {
+        val sp = prefs
+        if (sp != null && daemonHasData()) try {
+            if (sp.contains(key)) {
+                val v = sp.getLong(key, def)
+                remember(key, 'l', v)
+                return v
+            }
+        } catch (_: Throwable) {
+        }
+        mem[key]?.let { it.toLongOrNull()?.let { v -> return v } }
+        return def
+    }
+
+    fun str(key: String, def: String): String {
+        val sp = prefs
+        if (sp != null && daemonHasData()) try {
+            if (sp.contains(key)) {
+                val v = sp.getString(key, def) ?: def
+                remember(key, 's', v)
+                return v
+            }
+        } catch (_: Throwable) {
+        }
+        mem[key]?.let { return it }
+        return def
+    }
 
     // ---------- 功能开关（键名与 App 侧保持一致） ----------
     val flagEngineEnabled get() = bool("flag_engine_enabled", true)

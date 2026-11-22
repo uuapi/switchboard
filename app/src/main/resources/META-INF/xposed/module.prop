@@ -1,7 +1,7 @@
 name=Switchboard
 description=Flip every switch on Gboard - 集成多款 Gboard 模块特色功能的 LSPosed 新 API 模块
-version=0.3.1
-versionCode=4
+version=0.3.2
+versionCode=5
 author=Switchboard
 minApiVersion=102
 targetApiVersion=102

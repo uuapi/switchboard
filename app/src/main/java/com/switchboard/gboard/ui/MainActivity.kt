@@ -93,16 +93,48 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    // ---------- App 侧配置镜像 ----------
+    // Vector 的 remote preferences 是内存态（设备重启后 daemon 丢失全部键），
+    // App 把每次写入镜像到私有文件；daemon 缺数据（pref_sync_time 归零）时
+    // UI / 导出 从镜像恢复，与 Hook 侧缓存互为独立副本。
+
+    private val cacheFile by lazy { java.io.File(filesDir, "switchboard_cache.json") }
+    private var cacheObj = org.json.JSONObject()
+
+    private fun daemonHasData(): Boolean = runCatching {
+        service?.getRemotePreferences(Config.PREF_GROUP)?.getLong("pref_sync_time", 0L)
+    }.getOrDefault(0L) ?: 0L > 0L
+
+    private fun loadAppCache() {
+        cacheObj = runCatching {
+            org.json.JSONObject(cacheFile.takeIf { it.exists() }?.readText() ?: "{}")
+        }.getOrDefault(org.json.JSONObject())
+    }
+
+    private fun cacheWrite(key: String, value: Any?) {
+        runCatching {
+            cacheObj.putOpt(key, value ?: return)
+            cacheFile.writeText(cacheObj.toString())
+        }
+    }
+
+    private fun remoteOrDefault(item: Item, prefs: android.content.SharedPreferences): Any = when (item) {
+        is Item.Switch -> if (prefs.contains(item.key)) prefs.getBoolean(item.key, item.def)
+        else cacheObj.opt(item.key) as? Boolean ?: item.def
+        is Item.Num -> if (prefs.contains(item.key)) prefs.getInt(item.key, item.def)
+        else cacheObj.opt(item.key) as? Int ?: item.def
+        is Item.Text -> if (prefs.contains(item.key)) prefs.getString(item.key, item.def) ?: item.def
+        else cacheObj.opt(item.key) as? String ?: item.def
+        is Item.Choice -> if (prefs.contains(item.key)) prefs.getString(item.key, item.def) ?: item.def
+        else cacheObj.opt(item.key) as? String ?: item.def
+    }
+
     private fun loadAll() {
         val prefs = service?.getRemotePreferences(Config.PREF_GROUP) ?: return
+        loadAppCache()
         values.clear()
         for (item in SettingsModel.allItems) {
-            when (item) {
-                is Item.Switch -> values[item.key] = prefs.getBoolean(item.key, item.def)
-                is Item.Num -> values[item.key] = prefs.getInt(item.key, item.def)
-                is Item.Text -> values[item.key] = prefs.getString(item.key, item.def) ?: item.def
-                is Item.Choice -> values[item.key] = prefs.getString(item.key, item.def) ?: item.def
-            }
+            values[item.key] = remoteOrDefault(item, prefs)
         }
     }
 
@@ -114,20 +146,23 @@ class MainActivity : ComponentActivity() {
             is Int -> edit.putInt(key, value)
             is String -> edit.putString(key, value)
         }
+        // 同步戳：daemon 重启丢失后归零，Hook/App 两侧据此回退本地镜像
+        edit.putLong("pref_sync_time", System.currentTimeMillis())
         edit.apply()
+        cacheWrite(key, value)
     }
 
     private fun exportConfig() {
         val prefs = service?.getRemotePreferences(Config.PREF_GROUP) ?: run {
             toast(getString(R.string.service_bound_fail)); return
         }
+        loadAppCache()
         val obj = org.json.JSONObject()
         for (item in SettingsModel.allItems) {
-            when (item) {
-                is Item.Switch -> obj.put(item.key, prefs.getBoolean(item.key, item.def))
-                is Item.Num -> obj.put(item.key, prefs.getInt(item.key, item.def))
-                is Item.Text -> obj.put(item.key, prefs.getString(item.key, item.def) ?: item.def)
-                is Item.Choice -> obj.put(item.key, prefs.getString(item.key, item.def) ?: item.def)
+            when (val v = remoteOrDefault(item, prefs)) {
+                is Boolean -> obj.put(item.key, v)
+                is Int -> obj.put(item.key, v)
+                is String -> obj.put(item.key, v)
             }
         }
         clipboard(obj.toString())

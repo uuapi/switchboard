@@ -2,6 +2,21 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式。
 
+## [v0.3.2] — 配置持久化兜底
+
+### 修复
+- **配置不跨设备重启持久（上游 Vector 2.2 缺陷）**：remote preferences 为内存态，
+  daemon 重启（设备重启）丢失全部键，所有开关回默认。探针实验确认无落盘文件。
+
+### 新增
+- **本地配置镜像兜底**（App 与 Hook 两侧独立副本）：
+  - App 每次 `write` 打 `pref_sync_time` 同步戳并镜像到 App 私有文件；
+  - Hook 侧把最近读到的配置镜像到 Gboard 私有目录
+    （`files/switchboard_config.cache`）；
+  - 两侧均以 `pref_sync_time` 判定 daemon 是否持有数据——丢失时自动回退
+    本地镜像，重启后开关/数值原样恢复，用户无感知；用户改任意开关即重新
+    覆盖镜像。UI 显示与导出/导入同步使用镜像回退。
+
 ## [v0.3.1] — 真机测试修复轮
 
 ### 修复
